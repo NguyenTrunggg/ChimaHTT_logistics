@@ -21,12 +21,12 @@ export default function ContactPage() {
     {
       icon: Phone,
       titleKey: "phoneNumber",
-      content: "+84 25 3851 234\n+84 25 3851 235 (Fax)",
+      content: "0987461811",
     },
     {
       icon: Mail,
       titleKey: "email",
-      content: "info@chimahtt.com\nsupport@chimahtt.com",
+      content: "duydq@chimahtt.com\nsupport@chimahtt.com",
     },
   ]
 
@@ -166,7 +166,7 @@ export default function ContactPage() {
                         <p>{t("mondayFriday")}</p>
                         <p>{t("saturday")}</p>
                         <p>{t("sunday")}</p>
-                        <p className="text-[#00b764] font-medium mt-2">{t("hotline247")}: 1900 1234</p>
+                        <p className="text-[#00b764] font-medium mt-2">{t("hotline247")}: 0987461811</p>
                       </div>
                     </div>
                   </div>

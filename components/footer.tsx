@@ -77,16 +77,16 @@ export function Footer() {
               </li>
               <li className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-[#00b764] flex-shrink-0" />
-                <span className="text-white/80">+84 25 3851 234</span>
+                <span className="text-white/80">0987461811</span>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-[#00b764] flex-shrink-0" />
-                <span className="text-white/80">info@chimahtt.com</span>
+                <span className="text-white/80">duydq@chimahtt.com</span>
               </li>
             </ul>
             <div className="mt-4 p-3 bg-[#00b764]/20 rounded-lg">
               <p className="text-sm text-white/90 font-medium">{t("hotline247")}</p>
-              <p className="text-lg font-bold text-[#00b764]">1900 1234</p>
+              <p className="text-lg font-bold text-[#00b764]">0987461811</p>
             </div>
           </div>
 
