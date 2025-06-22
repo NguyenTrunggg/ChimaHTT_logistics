@@ -10,7 +10,14 @@ export const metadata: Metadata = {
   title: "Chi Ma HTT Logistics - Giải pháp Logistics Toàn cầu",
   description:
     "15 năm kinh nghiệm trong lĩnh vực logistics tại cửa khẩu Chi Ma. Cung cấp dịch vụ vận chuyển, kho bãi và khai báo hải quan chuyên nghiệp.",
-    generator: 'v0.dev'
+  icons: {
+    icon: [
+      { url: '/img/logo.png', sizes: 'any' },
+      { url: '/favicon.ico', sizes: '32x32' }
+    ],
+    shortcut: '/img/logo.png',
+    apple: '/img/logo.png',
+  }
 }
 
 export default function RootLayout({

@@ -15,3 +15,9 @@ export const localeFlags = {
   en: "🇺🇸",
   cn: "🇨🇳",
 }
+
+// For server components
+export function getTranslations(locale: Locale = defaultLocale) {
+  const { translations } = require('./translations')
+  return translations[locale]
+}

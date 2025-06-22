@@ -29,15 +29,17 @@ export function HeroSection() {
   }, [])
 
   return (
-    <section className="relative h-screen overflow-hidden">
+    <section className="relative h-[60vh] md:h-[70vh] lg:h-screen overflow-hidden">
       {/* Image Slideshow Background */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 bg-[#f8fafc]">
         {heroImages.map((image, index) => (
           <img
             key={index}
             src={image.src || "/placeholder.svg"}
             alt={image.alt}
-            className={`absolute inset-0 w-full h-full object-container transition-opacity duration-1000 ${
+            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
+              image.src === "/img/banner1.png" ? "object-contain" : "object-cover"
+            } ${
               index === currentImageIndex ? "opacity-100" : "opacity-0"
             }`}
           />
