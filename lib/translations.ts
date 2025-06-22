@@ -61,7 +61,7 @@ export const translations = {
     aboutUsBtn: "VỀ CHÚNG TÔI",
 
     // News Section
-    newsTitle: "TIN TỨC MỚI NHẤT",
+    newsTitle: "TIN TỨC LOGISTICS",
     newsSubtitle: "Cập nhật thông tin mới nhất về ngành logistics và hoạt động của Chi Ma HTT",
     viewAllNews: "XEM TẤT CẢ TIN TỨC",
     companyNews: "Tin công ty",

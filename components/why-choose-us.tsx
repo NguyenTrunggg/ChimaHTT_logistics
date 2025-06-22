@@ -44,31 +44,35 @@ export function WhyChooseUs() {
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-[60%_40%] gap-12 items-center">
           {/* Image Gallery */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-4">
+          <div className="grid grid-cols-2 grid-rows-2 gap-4">
+            <div>
               <img
                 src="/img/why3.png"
                 alt="Warehouse facility"
-                className="w-full h-52 object-cover rounded-lg shadow-md"
-              />
-              <img
-                src="/img/why2.png"
-                alt="Logistics operations"
-                className="w-full h-40 object-cover rounded-lg shadow-md"
+                className="w-full h-64 object-cover rounded-lg shadow-md"
               />
             </div>
-            <div className="space-y-4 mt-8">
+            <div>
               <img
                 src="/img/why1.png"
                 alt="Container handling"
-                className="w-full h-40 object-cover rounded-lg shadow-md"
+                className="w-full h-64 object-cover rounded-lg shadow-md"
               />
+            </div>
+            <div>
+              <img
+                src="/img/why2.png"
+                alt="Logistics operations"
+                className="w-full h-64 object-cover rounded-lg shadow-md"
+              />
+            </div>
+            <div>
               <img
                 src="/img/why4.png"
                 alt="Truck fleet"
-                className="w-full h-52 object-cover rounded-lg shadow-md"
+                className="w-full h-64 object-cover rounded-lg shadow-md"
               />
             </div>
           </div>
