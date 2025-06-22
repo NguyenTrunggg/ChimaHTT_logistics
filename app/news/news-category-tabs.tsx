@@ -1,8 +1,7 @@
 "use client"
 
-import { useState } from 'react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface NewsCategoryTabsProps {
   categories: {
@@ -10,53 +9,48 @@ interface NewsCategoryTabsProps {
     events: string
     internal: string
     industry: string
+    [key: string]: string
   }
 }
 
 export default function NewsCategoryTabs({ categories }: NewsCategoryTabsProps) {
-  const router = useRouter()
   const [activeTab, setActiveTab] = useState("all")
 
-  const handleTabChange = (value: string) => {
-    setActiveTab(value)
-    
-    // In a real application, you would update the URL with a query parameter
-    // and filter the news accordingly
-    if (value === "all") {
-      router.push("/news")
-    } else {
-      router.push(`/news?category=${value}`)
-    }
-  }
-  
   return (
-    <Tabs defaultValue="all" className="w-full" onValueChange={handleTabChange}>
-      <TabsList className="grid w-full grid-cols-1 h-auto gap-2 bg-transparent">
-        <TabsTrigger 
-          value="all" 
-          className="data-[state=active]:bg-[#00b764] data-[state=active]:text-white transition-all"
-        >
-          {categories.all}
-        </TabsTrigger>
-        <TabsTrigger 
-          value="events" 
-          className="data-[state=active]:bg-[#00b764] data-[state=active]:text-white transition-all"
-        >
-          {categories.events}
-        </TabsTrigger>
-        <TabsTrigger 
-          value="internal" 
-          className="data-[state=active]:bg-[#00b764] data-[state=active]:text-white transition-all"
-        >
-          {categories.internal}
-        </TabsTrigger>
-        <TabsTrigger 
-          value="industry" 
-          className="data-[state=active]:bg-[#00b764] data-[state=active]:text-white transition-all"
-        >
-          {categories.industry}
-        </TabsTrigger>
-      </TabsList>
-    </Tabs>
+    <div className="mb-8">
+      <Tabs 
+        defaultValue="all" 
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="w-full"
+      >
+        <TabsList className="w-full flex justify-start overflow-x-auto pb-2 bg-transparent border-b border-gray-200">
+          <TabsTrigger 
+            value="all"
+            className={`px-6 py-3 text-base font-medium rounded-none border-b-2 data-[state=active]:border-[#00b764] data-[state=active]:bg-transparent data-[state=active]:text-[#00b764] border-transparent transition-all`}
+          >
+            — {categories.all}
+          </TabsTrigger>
+          <TabsTrigger 
+            value="events"
+            className={`px-6 py-3 text-base font-medium rounded-none border-b-2 data-[state=active]:border-[#00b764] data-[state=active]:bg-transparent data-[state=active]:text-[#00b764] border-transparent transition-all`}
+          >
+            {categories.events}
+          </TabsTrigger>
+          <TabsTrigger 
+            value="internal" 
+            className={`px-6 py-3 text-base font-medium rounded-none border-b-2 data-[state=active]:border-[#00b764] data-[state=active]:bg-transparent data-[state=active]:text-[#00b764] border-transparent transition-all`}
+          >
+            {categories.internal}
+          </TabsTrigger>
+          <TabsTrigger 
+            value="industry"
+            className={`px-6 py-3 text-base font-medium rounded-none border-b-2 data-[state=active]:border-[#00b764] data-[state=active]:bg-transparent data-[state=active]:text-[#00b764] border-transparent transition-all`}
+          >
+            {categories.industry}
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
+    </div>
   )
 } 

@@ -23,8 +23,8 @@ export default function NewsCard({ id, title, date, category, image, className =
             className="object-cover"
           />
         </div>
-        <div className="p-4">
-          <div className="flex items-center gap-3 mb-2 text-sm text-gray-500">
+        <div className="p-6">
+          <div className="flex items-center gap-4 mb-3 text-sm text-gray-500">
             <div className="flex items-center">
               <CalendarDays className="w-3 h-3 mr-1" />
               <span className="text-xs">{date}</span>

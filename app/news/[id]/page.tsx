@@ -150,7 +150,7 @@ export default function NewsDetailPage({ params }: NewsDetailPageProps) {
           {/* Related news */}
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <h3 className="text-xl font-bold mb-4 text-[#009f56]">{t.relatedNews}</h3>
-            <div className="space-y-4">
+            <div className="space-y-8">
               {relatedNews.map((item) => (
                 <Link href={`/news/${item.id}`} key={item.id}>
                   <div className="flex gap-3 group">

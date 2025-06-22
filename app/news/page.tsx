@@ -107,12 +107,26 @@ export default function NewsPage() {
       category: t.knowledgeNews,
       image: "/img/why4.png",
     },
+    {
+      id: "14",
+      title: "LỄ KHÁNH THÀNH BẾN 5 VẠN TẤN, CẢNG QUỐC TẾ CHI MA",
+      date: "05/02/2025",
+      category: t.eventsNews,
+      image: "/img/service6.png",
+    },
+    {
+      id: "15",
+      title: "TIM HIỂU VỀ GRI – PHỤ PHÍ CƯỚC VẬN CHUYỂN TĂNG",
+      date: "08/05/2025",
+      category: t.industryNews,
+      image: "/img/new2.png",
+    },
   ]
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-12">
       {/* Banner */}
-      <div className="relative w-full h-64 mb-12 rounded-lg overflow-hidden">
+      <div className="relative w-full h-64 mb-16 rounded-lg overflow-hidden">
         <Image 
           src="/img/banner_about.png" 
           alt={t.newsPageTitle}
@@ -125,12 +139,12 @@ export default function NewsPage() {
       </div>
 
       {/* Featured news */}
-      <div className="mb-12">
-        <div className="flex items-center justify-between mb-6">
+      <div className="mb-16">
+        <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-bold text-[#009f56]">{t.newsPageTitle}</h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Main featured news - larger size */}
           <div className="col-span-1 lg:col-span-2 bg-white rounded-lg overflow-hidden shadow-md">
             <div className="relative h-80 w-full">
@@ -141,8 +155,8 @@ export default function NewsPage() {
                 className="object-cover"
               />
             </div>
-            <div className="p-6">
-              <div className="flex items-center gap-4 mb-3 text-sm text-gray-500">
+            <div className="p-8">
+              <div className="flex items-center gap-4 mb-4 text-sm text-gray-500">
                 <span className="bg-[#e8f5ee] text-[#00b764] px-3 py-1 rounded-full text-xs">
                   {featuredNews.category}
                 </span>
@@ -151,8 +165,8 @@ export default function NewsPage() {
                   <span>{featuredNews.date}</span>
                 </div>
               </div>
-              <h3 className="text-xl font-bold mb-3">{featuredNews.title}</h3>
-              <p className="text-gray-600 mb-4">{featuredNews.excerpt}</p>
+              <h3 className="text-xl font-bold mb-4">{featuredNews.title}</h3>
+              <p className="text-gray-600 mb-6">{featuredNews.excerpt}</p>
               <Link href={`/news/${featuredNews.id}`}>
                 <Button className="bg-[#00b764] hover:bg-[#009f56] text-white">
                   {t.readMore} <ChevronRight className="h-4 w-4 ml-1" />
@@ -161,23 +175,55 @@ export default function NewsPage() {
             </div>
           </div>
 
-          {/* News categories tabs (client component) */}
-          <div className="col-span-1 bg-white rounded-lg shadow-md p-6">
-            <NewsCategoryTabs 
-              categories={{
-                all: t.allNews,
-                events: t.eventsNews,
-                internal: t.internalNews,
-                industry: t.industryNews
-              }}
-            />
+          {/* Hot news sidebar (moved from below) */}
+          <div className="col-span-1">
+            <div className="bg-white rounded-lg shadow-md p-8">
+              <h3 className="text-xl font-bold mb-8 text-[#C14639]">{t.hotNews}</h3>
+              <div>
+                {hotNews.map((item, index) => (
+                  <Link href={`/news/${item.id}`} key={item.id}>
+                    <div className={`flex gap-5 group ${index !== hotNews.length - 1 ? 'mb-4' : ''}`}>
+                      <div className="relative h-20 w-28 flex-shrink-0">
+                        <Image 
+                          src={item.image} 
+                          alt={item.title} 
+                          fill 
+                          className="object-cover rounded"
+                        />
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-base group-hover:text-[#00b764] line-clamp-2">
+                          {item.title}
+                        </h4>
+                        <div className="flex items-center mt-2 text-xs text-gray-500">
+                          <CalendarDays className="w-3 h-3 mr-1" />
+                          <span>{item.date}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
+      {/* News category tabs (moved from above) */}
+      <div className="mb-10">
+        <NewsCategoryTabs 
+          categories={{
+            all: t.allNews,
+            events: t.eventsNews,
+            internal: t.internalNews,
+            industry: t.industryNews
+          }}
+        />
+      </div>
+
       {/* News grid */}
-      <div className="mb-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {newsItems.map((item) => (
             <NewsCard 
               key={item.id}
@@ -190,40 +236,20 @@ export default function NewsPage() {
           ))}
         </div>
 
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center mt-10">
           <Button className="bg-white text-[#00b764] border border-[#00b764] hover:bg-[#e8f5ee]">
             {t.viewMore}
           </Button>
         </div>
       </div>
 
-      {/* Hot news section */}
-      <div className="mb-12">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-[#009f56]">{t.hotNews}</h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {hotNews.map((item) => (
-            <NewsCard 
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              date={item.date}
-              category={item.category}
-              image={item.image}
-            />
-          ))}
-        </div>
-      </div>
-
       {/* Link to services */}
-      <div className="bg-[#f8f8f8] rounded-lg p-8 text-center">
-        <h3 className="text-2xl font-bold mb-4">{t.moreServiceInfo}</h3>
-        <p className="text-gray-600 mb-6">
+      <div className="bg-[#f8f8f8] rounded-lg p-10 text-center">
+        <h3 className="text-2xl font-bold mb-5">{t.moreServiceInfo}</h3>
+        <p className="text-gray-600 mb-8">
           {t.moreServiceInfoDesc}
         </p>
-        <div className="flex justify-center gap-4">
+        <div className="flex justify-center gap-6">
           <Link href="/services">
             <Button className="bg-[#00b764] hover:bg-[#009f56] text-white">
               {t.viewServices}
