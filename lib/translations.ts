@@ -8,6 +8,15 @@ export const translations = {
     careers: "TUYỂN DỤNG",
     contact: "LIÊN HỆ",
 
+    // Service Menu items
+    logisticsSupportService: "Dịch vụ phụ trợ logistics",
+    customsClearanceService: "Dịch vụ thông quan",
+    customsAgentService: "Dịch vụ đại lý hải quan",
+    bondedWarehouseService: "Kho ngoại quan, kho kiểm hóa",
+    freightForwardingService: "Dịch vụ giao nhận hàng hóa",
+    landBusinessService: "Dịch vụ kinh doanh mặt bằng",
+    allServices: "Tất cả dịch vụ",
+
     // Hero Section
     heroTitle: "Giải pháp Logistics Toàn cầu",
     heroSubtitle: "15 năm kinh nghiệm tại cửa khẩu Chi Ma",
@@ -254,6 +263,96 @@ export const translations = {
     staffTraining: "Đào tạo nhân sự",
     costOptimization: "Tối ưu hóa chi phí",
     riskManagement: "Quản lý rủi ro",
+
+    // Benefits Section
+    benefitsTitle: "Lợi ích khi sử dụng dịch vụ đại lý hải quan",
+    benefitsDesc: "Đại lý hải quan chuyên nghiệp giúp doanh nghiệp tiết kiệm thời gian và tối ưu chi phí",
+    
+    // Benefits Items
+    expertiseTitle: "Chuyên môn sâu rộng",
+    expertiseDesc: "Đội ngũ chuyên gia giàu kinh nghiệm trong lĩnh vực hải quan",
+    representationTitle: "Đại diện đáng tin cậy",
+    representationDesc: "Đại diện cho doanh nghiệp trong mọi vấn đề liên quan đến hải quan",
+    policyConsultingTitle: "Tư vấn chính sách",
+    policyConsultingDesc: "Cập nhật các quy định, chính sách mới nhất về xuất nhập khẩu",
+    taxOptimizationTitle: "Tối ưu thuế quan",
+    taxOptimizationDesc: "Áp dụng các ưu đãi thuế quan phù hợp để giảm chi phí",
+    legalRiskReductionTitle: "Giảm rủi ro pháp lý",
+    legalRiskReductionDesc: "Đảm bảo tuân thủ đúng quy định pháp luật, tránh các rủi ro pháp lý",
+    resourceSavingTitle: "Tiết kiệm nguồn lực",
+    resourceSavingDesc: "Giảm nguồn lực nội bộ cần thiết cho việc xử lý thủ tục hải quan",
+
+    // Benefits Section - Customs Clearance
+    clearanceBenefitsTitle: "Lợi ích của dịch vụ thông quan",
+    clearanceBenefitsDesc: "Đảm bảo quá trình thông quan diễn ra suôn sẻ và hiệu quả",
+    
+    // Benefits Items - Customs Clearance
+    timeSavingTitle: "Tiết kiệm thời gian",
+    timeSavingDesc: "Hoàn thành thủ tục thông quan nhanh chóng, rút ngắn thời gian chờ đợi",
+    legalComplianceTitle: "Tuân thủ pháp luật",
+    legalComplianceDesc: "Đảm bảo tuân thủ đầy đủ các quy định pháp luật về xuất nhập khẩu",
+    riskMinimizationTitle: "Giảm thiểu rủi ro",
+    riskMinimizationDesc: "Hạn chế rủi ro về pháp lý và tài chính trong quá trình thông quan",
+    taxOptimizationClearanceTitle: "Tối ưu hóa thuế quan",
+    taxOptimizationClearanceDesc: "Tư vấn áp dụng các ưu đãi thuế quan phù hợp với từng lô hàng",
+    support247Title: "Hỗ trợ 24/7",
+    support247Desc: "Đội ngũ chuyên gia sẵn sàng hỗ trợ mọi lúc mọi nơi",
+    transparencyTitle: "Minh bạch thông tin",
+    transparencyDesc: "Cập nhật tình trạng thông quan theo thời gian thực",
+
+    // Benefits Section - Logistics Support
+    logisticsBenefitsTitle: "Lợi ích của dịch vụ phụ trợ logistics",
+    logisticsBenefitsDesc: "Giúp doanh nghiệp của bạn tối ưu hóa hoạt động và tiết kiệm chi phí",
+    
+    // Benefits Items - Logistics Support
+    costOptimizationLogisticsTitle: "Tối ưu hóa chi phí",
+    costOptimizationLogisticsDesc: "Giảm chi phí vận chuyển và lưu kho thông qua quy trình hiệu quả",
+    efficiencyTitle: "Nâng cao hiệu suất",
+    efficiencyDesc: "Cải thiện hiệu suất hoạt động với các giải pháp logistics toàn diện",
+    fastDeliveryTitle: "Thời gian giao hàng nhanh",
+    fastDeliveryDesc: "Rút ngắn thời gian giao hàng và tăng độ hài lòng của khách hàng",
+    inventoryControlTitle: "Kiểm soát hàng tồn kho",
+    inventoryControlDesc: "Quản lý hiệu quả hàng tồn kho và tránh tình trạng thiếu hụt",
+    transparentReportingTitle: "Báo cáo minh bạch",
+    transparentReportingDesc: "Cung cấp báo cáo chi tiết về tình trạng và vị trí hàng hóa",
+    businessExpansionTitle: "Mở rộng kinh doanh",
+    businessExpansionDesc: "Tập trung vào kinh doanh cốt lõi trong khi chúng tôi lo phần logistics",
+
+    // Benefits Section - Bonded Warehouse
+    warehouseBenefitsTitle: "Lợi ích của kho ngoại quan và kho kiểm hóa",
+    warehouseBenefitsDesc: "Giải pháp lưu trữ và bảo quản hàng hóa chuyên nghiệp với nhiều ưu đãi",
+    
+    // Benefits Items - Bonded Warehouse
+    taxSavingTitle: "Tiết kiệm thuế quan",
+    taxSavingDesc: "Trì hoãn nộp thuế cho đến khi hàng hóa được đưa vào lưu thông trong nước",
+    warehouseSafetyTitle: "An toàn tuyệt đối",
+    warehouseSafetyDesc: "Hệ thống an ninh 24/7 với camera giám sát và đội ngũ bảo vệ chuyên nghiệp",
+    processingFlexibilityTitle: "Linh hoạt trong xử lý",
+    processingFlexibilityDesc: "Hàng hóa có thể được đóng gói lại, chia nhỏ hoặc gộp lô trong kho ngoại quan",
+    modernSystemTitle: "Hệ thống hiện đại",
+    modernSystemDesc: "Quản lý kho thông minh với phần mềm WMS tiên tiến, theo dõi hàng hóa theo thời gian thực",
+    valueAddedServicesTitle: "Dịch vụ giá trị gia tăng",
+    valueAddedServicesDesc: "Đóng gói, dán nhãn, kiểm đếm, và dịch vụ logistics tích hợp",
+    strategicLocationTitle: "Vị trí chiến lược",
+    strategicLocationDesc: "Nằm tại cửa khẩu Chi Ma, thuận lợi cho việc xuất nhập khẩu hàng hóa",
+
+    // Benefits Section - Freight Forwarding
+    freightBenefitsTitle: "Lợi ích của dịch vụ giao nhận hàng hóa",
+    freightBenefitsDesc: "Giải pháp vận chuyển hàng hóa quốc tế toàn diện cho doanh nghiệp của bạn",
+    
+    // Benefits Items - Freight Forwarding
+    freightGlobalNetworkTitle: "Mạng lưới toàn cầu",
+    freightGlobalNetworkDesc: "Kết nối với các đối tác vận tải uy tín khắp thế giới",
+    freightDiverseOptionsTitle: "Tùy chọn đa dạng",
+    freightDiverseOptionsDesc: "Nhiều phương thức vận chuyển: đường biển, đường bộ, đường sắt, đường hàng không",
+    freightOptimalSolutionTitle: "Giải pháp tối ưu",
+    freightOptimalSolutionDesc: "Tư vấn lộ trình vận chuyển tối ưu về thời gian và chi phí",
+    freightOnlineTrackingTitle: "Theo dõi trực tuyến",
+    freightOnlineTrackingDesc: "Cập nhật tình trạng hàng hóa theo thời gian thực 24/7",
+    freightQuickProblemSolvingTitle: "Giải quyết vấn đề nhanh",
+    freightQuickProblemSolvingDesc: "Xử lý kịp thời các sự cố phát sinh trong quá trình vận chuyển",
+    freightCompleteServiceTitle: "Dịch vụ trọn gói",
+    freightCompleteServiceDesc: "Từ đóng gói, bốc xếp đến thủ tục hải quan và giao hàng tận nơi",
   },
   en: {
     // Header & Navigation
@@ -263,6 +362,15 @@ export const translations = {
     news: "NEWS",
     careers: "CAREERS",
     contact: "CONTACT",
+
+    // Service Menu items
+    logisticsSupportService: "Logistics Support Services",
+    customsClearanceService: "Customs Clearance",
+    customsAgentService: "Customs Agency Services",
+    bondedWarehouseService: "Bonded Warehouse & Inspection",
+    freightForwardingService: "Freight Forwarding Services",
+    landBusinessService: "Land Business Services",
+    allServices: "All Services",
 
     // Hero Section
     heroTitle: "Global Logistics Solutions",
@@ -508,6 +616,96 @@ export const translations = {
     staffTraining: "Staff training",
     costOptimization: "Cost optimization",
     riskManagement: "Risk management",
+
+    // Benefits Section
+    benefitsTitle: "Benefits of Using Customs Agency Services",
+    benefitsDesc: "Professional customs agents help businesses save time and optimize costs",
+    
+    // Benefits Items
+    expertiseTitle: "Extensive Expertise",
+    expertiseDesc: "Team of experienced experts in customs field",
+    representationTitle: "Trusted Representation",
+    representationDesc: "Representing businesses in all customs-related matters",
+    policyConsultingTitle: "Policy Consulting",
+    policyConsultingDesc: "Updates on latest regulations and import-export policies",
+    taxOptimizationTitle: "Customs Tax Optimization",
+    taxOptimizationDesc: "Applying appropriate tax incentives to reduce costs",
+    legalRiskReductionTitle: "Legal Risk Reduction",
+    legalRiskReductionDesc: "Ensuring compliance with legal regulations, avoiding legal risks",
+    resourceSavingTitle: "Resource Saving",
+    resourceSavingDesc: "Reducing internal resources needed for customs procedures",
+
+    // Benefits Section - Customs Clearance
+    clearanceBenefitsTitle: "Benefits of Customs Clearance Service",
+    clearanceBenefitsDesc: "Ensuring smooth and efficient customs clearance process",
+    
+    // Benefits Items - Customs Clearance
+    timeSavingTitle: "Time Saving",
+    timeSavingDesc: "Completing customs procedures quickly, reducing waiting time",
+    legalComplianceTitle: "Legal Compliance",
+    legalComplianceDesc: "Ensuring full compliance with import-export regulations",
+    riskMinimizationTitle: "Risk Minimization",
+    riskMinimizationDesc: "Limiting legal and financial risks during customs clearance",
+    taxOptimizationClearanceTitle: "Customs Duty Optimization",
+    taxOptimizationClearanceDesc: "Advising on appropriate tax incentives for each shipment",
+    support247Title: "24/7 Support",
+    support247Desc: "Expert team ready to assist anytime, anywhere",
+    transparencyTitle: "Information Transparency",
+    transparencyDesc: "Real-time updates on customs clearance status",
+
+    // Benefits Section - Logistics Support
+    logisticsBenefitsTitle: "Benefits of Logistics Support Services",
+    logisticsBenefitsDesc: "Help your business optimize operations and reduce costs",
+    
+    // Benefits Items - Logistics Support
+    costOptimizationLogisticsTitle: "Cost Optimization",
+    costOptimizationLogisticsDesc: "Reduce transportation and storage costs through efficient processes",
+    efficiencyTitle: "Enhanced Efficiency",
+    efficiencyDesc: "Improve operational efficiency with comprehensive logistics solutions",
+    fastDeliveryTitle: "Fast Delivery Times",
+    fastDeliveryDesc: "Reduce delivery times and increase customer satisfaction",
+    inventoryControlTitle: "Inventory Control",
+    inventoryControlDesc: "Efficiently manage inventory and avoid shortages",
+    transparentReportingTitle: "Transparent Reporting",
+    transparentReportingDesc: "Provide detailed reports on cargo status and location",
+    businessExpansionTitle: "Business Expansion",
+    businessExpansionDesc: "Focus on core business while we handle logistics",
+
+    // Benefits Section - Bonded Warehouse
+    warehouseBenefitsTitle: "Benefits of Bonded Warehouse and Inspection Warehouse",
+    warehouseBenefitsDesc: "Professional cargo storage and preservation solutions with many advantages",
+    
+    // Benefits Items - Bonded Warehouse
+    taxSavingTitle: "Customs Tax Saving",
+    taxSavingDesc: "Delay tax payment until goods are released for domestic circulation",
+    warehouseSafetyTitle: "Absolute Safety",
+    warehouseSafetyDesc: "24/7 security system with surveillance cameras and professional security team",
+    processingFlexibilityTitle: "Processing Flexibility",
+    processingFlexibilityDesc: "Goods can be repackaged, split or consolidated in bonded warehouse",
+    modernSystemTitle: "Modern System",
+    modernSystemDesc: "Smart warehouse management with advanced WMS software, real-time cargo tracking",
+    valueAddedServicesTitle: "Value-Added Services",
+    valueAddedServicesDesc: "Packaging, labeling, counting, and integrated logistics services",
+    strategicLocationTitle: "Strategic Location",
+    strategicLocationDesc: "Located at Chi Ma border gate, convenient for import and export of goods",
+
+    // Benefits Section - Freight Forwarding
+    freightBenefitsTitle: "Benefits of Freight Forwarding Services",
+    freightBenefitsDesc: "Comprehensive international cargo transportation solutions for your business",
+    
+    // Benefits Items - Freight Forwarding
+    freightGlobalNetworkTitle: "Global Network",
+    freightGlobalNetworkDesc: "Connected with reputable transportation partners worldwide",
+    freightDiverseOptionsTitle: "Diverse Options",
+    freightDiverseOptionsDesc: "Multiple transportation methods: sea, road, rail, air",
+    freightOptimalSolutionTitle: "Optimal Solutions",
+    freightOptimalSolutionDesc: "Consulting on optimal transportation routes for time and cost",
+    freightOnlineTrackingTitle: "Online Tracking",
+    freightOnlineTrackingDesc: "Real-time cargo status updates 24/7",
+    freightQuickProblemSolvingTitle: "Quick Problem Solving",
+    freightQuickProblemSolvingDesc: "Timely handling of issues arising during transportation",
+    freightCompleteServiceTitle: "Complete Service",
+    freightCompleteServiceDesc: "From packaging, loading to customs procedures and door-to-door delivery",
   },
   cn: {
     // Header & Navigation
@@ -517,6 +715,15 @@ export const translations = {
     news: "新闻",
     careers: "招聘",
     contact: "联系我们",
+
+    // Service Menu items
+    logisticsSupportService: "物流支持服务",
+    customsClearanceService: "通关服务",
+    customsAgentService: "海关代理服务",
+    bondedWarehouseService: "保税仓库和检验仓库",
+    freightForwardingService: "货物运输服务",
+    landBusinessService: "土地商业服务",
+    allServices: "全部服务",
 
     // Hero Section
     heroTitle: "全球物流解决方案",
@@ -754,6 +961,96 @@ export const translations = {
     staffTraining: "员工培训",
     costOptimization: "成本优化",
     riskManagement: "风险管理",
+
+    // Benefits Section
+    benefitsTitle: "使用海关代理服务的好处",
+    benefitsDesc: "专业海关代理帮助企业节省时间并优化成本",
+    
+    // Benefits Items
+    expertiseTitle: "广泛专业知识",
+    expertiseDesc: "在海关领域拥有丰富经验的专家团队",
+    representationTitle: "可信赖的代表",
+    representationDesc: "在所有与海关相关的事务中代表企业",
+    policyConsultingTitle: "政策咨询",
+    policyConsultingDesc: "提供最新法规和进出口政策的更新",
+    taxOptimizationTitle: "关税优化",
+    taxOptimizationDesc: "应用适当的税收优惠以降低成本",
+    legalRiskReductionTitle: "降低法律风险",
+    legalRiskReductionDesc: "确保遵守法律法规，避免法律风险",
+    resourceSavingTitle: "资源节约",
+    resourceSavingDesc: "减少海关程序所需的内部资源",
+
+    // Benefits Section - Customs Clearance
+    clearanceBenefitsTitle: "通关服务的好处",
+    clearanceBenefitsDesc: "确保通关过程顺利高效",
+    
+    // Benefits Items - Customs Clearance
+    timeSavingTitle: "节省时间",
+    timeSavingDesc: "快速完成通关手续，缩短等待时间",
+    legalComplianceTitle: "法律合规",
+    legalComplianceDesc: "确保完全遵守进出口法规",
+    riskMinimizationTitle: "风险最小化",
+    riskMinimizationDesc: "限制通关过程中的法律和财务风险",
+    taxOptimizationClearanceTitle: "关税优化",
+    taxOptimizationClearanceDesc: "为每批货物提供适当的税收优惠建议",
+    support247Title: "24/7支持",
+    support247Desc: "专家团队随时随地准备协助",
+    transparencyTitle: "信息透明",
+    transparencyDesc: "实时更新通关状态",
+
+    // Benefits Section - Logistics Support
+    logisticsBenefitsTitle: "物流支持服务的好处",
+    logisticsBenefitsDesc: "帮助您的企业优化运营并降低成本",
+    
+    // Benefits Items - Logistics Support
+    costOptimizationLogisticsTitle: "成本优化",
+    costOptimizationLogisticsDesc: "通过高效流程降低运输和存储成本",
+    efficiencyTitle: "提高效率",
+    efficiencyDesc: "通过全面的物流解决方案提高运营效率",
+    fastDeliveryTitle: "快速交货时间",
+    fastDeliveryDesc: "缩短交货时间并提高客户满意度",
+    inventoryControlTitle: "库存控制",
+    inventoryControlDesc: "有效管理库存并避免短缺",
+    transparentReportingTitle: "透明报告",
+    transparentReportingDesc: "提供有关货物状态和位置的详细报告",
+    businessExpansionTitle: "业务扩展",
+    businessExpansionDesc: "专注于核心业务，而我们处理物流",
+
+    // Benefits Section - Bonded Warehouse
+    warehouseBenefitsTitle: "保税仓库和检验仓库的好处",
+    warehouseBenefitsDesc: "专业的货物存储和保存解决方案，具有多种优势",
+    
+    // Benefits Items - Bonded Warehouse
+    taxSavingTitle: "关税节省",
+    taxSavingDesc: "延迟税款支付直到货物进入国内流通",
+    warehouseSafetyTitle: "绝对安全",
+    warehouseSafetyDesc: "24/7安全系统，配备监控摄像头和专业安保团队",
+    processingFlexibilityTitle: "处理灵活性",
+    processingFlexibilityDesc: "货物可以在保税仓库中重新包装、拆分或合并",
+    modernSystemTitle: "现代化系统",
+    modernSystemDesc: "智能仓库管理，配备先进的WMS软件，实时货物跟踪",
+    valueAddedServicesTitle: "增值服务",
+    valueAddedServicesDesc: "包装、标签、计数和综合物流服务",
+    strategicLocationTitle: "战略位置",
+    strategicLocationDesc: "位于芝麻口岸，便于货物进出口",
+
+    // Benefits Section - Freight Forwarding
+    freightBenefitsTitle: "货运代理服务的好处",
+    freightBenefitsDesc: "为您的企业提供全面的国际货物运输解决方案",
+    
+    // Benefits Items - Freight Forwarding
+    freightGlobalNetworkTitle: "全球网络",
+    freightGlobalNetworkDesc: "与全球信誉良好的运输合作伙伴连接",
+    freightDiverseOptionsTitle: "多样化选择",
+    freightDiverseOptionsDesc: "多种运输方式：海运、公路、铁路、空运",
+    freightOptimalSolutionTitle: "最佳解决方案",
+    freightOptimalSolutionDesc: "为时间和成本提供最佳运输路线咨询",
+    freightOnlineTrackingTitle: "在线跟踪",
+    freightOnlineTrackingDesc: "24/7实时货物状态更新",
+    freightQuickProblemSolvingTitle: "快速解决问题",
+    freightQuickProblemSolvingDesc: "及时处理运输过程中出现的问题",
+    freightCompleteServiceTitle: "完整服务",
+    freightCompleteServiceDesc: "从包装、装载到海关手续和上门交付",
   },
 }
 

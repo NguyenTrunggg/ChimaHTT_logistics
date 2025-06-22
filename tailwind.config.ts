@@ -74,7 +74,7 @@ const config: Config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        sans: ["var(--font-plus-jakarta-sans)", "system-ui", "sans-serif"],
+        sans: ["Arial", "sans-serif"],
       },
     },
   },
