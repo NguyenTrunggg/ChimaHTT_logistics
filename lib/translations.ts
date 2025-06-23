@@ -17,6 +17,12 @@ export const translations = {
     landBusinessService: "Dịch vụ kinh doanh mặt bằng",
     allServices: "Tất cả dịch vụ",
 
+    // Service descriptions for homepage
+    logisticsSupportDesc: "Giải pháp logistics end-to-end cho mọi nhu cầu doanh nghiệp",
+    customsAgentDesc: "Đại diện đáng tin cậy trong mọi thủ tục hải quan",
+    freightForwardingDesc: "Mạng lưới vận chuyển toàn cầu với đối tác uy tín",
+    landBusinessDesc: "Dịch vụ kinh doanh mặt bằng tại vị trí chiến lược cửa khẩu Chi Ma",
+
     // Hero Section
     heroTitle: "Giải pháp Logistics Toàn cầu",
     heroSubtitle: "15 năm kinh nghiệm tại cửa khẩu Chi Ma",
@@ -65,7 +71,7 @@ export const translations = {
     newsSubtitle: "Cập nhật thông tin mới nhất về ngành logistics và hoạt động của Chi Ma HTT",
     viewAllNews: "XEM TẤT CẢ TIN TỨC",
     companyNews: "Tin công ty",
-    industryNews: "Tin ngành",
+    industryNews: "TIN NGÀNH",
     recruitment: "Tuyển dụng",
     readTime: "phút",
     newsItem1Title: "Chi Ma HTT mở rộng dịch vụ kho ngoại quan mới",
@@ -219,7 +225,7 @@ export const translations = {
     sendContact: "GỬI LIÊN HỆ",
     messageContent: "Nội dung tin nhắn",
     requiredFields: "* Các trường bắt buộc. Chúng tôi sẽ phản hồi trong vòng 24 giờ.",
-    officeLocation: "VỊ TRÍ VĂN PHÒNG",
+    officeLocation: "VỊ TRÍ CÔNG TY",
     officeLocationDesc: "Tọa lạc tại vị trí chiến lược ngay cửa khẩu Chi Ma",
     travelGuide: "HƯỚNG DẪN ĐI LẠI",
     fromHanoi: "Từ Hà Nội:",
@@ -386,13 +392,10 @@ export const translations = {
     allNews: "Tất cả",
     eventsNews: "TIN TỨC SỰ KIỆN",
     internalNews: "TIN TỨC NỘI BỘ", 
-    industryNews: "TIN TỨC CHUYÊN NGÀNH",
     knowledgeNews: "TIN KIẾN THỨC",
     latestNews: "TIN MỚI NHẤT",
     hotNews: "TIN NỔI BẬT",
     relatedNews: "TIN LIÊN QUAN",
-    viewMore: "XEM THÊM",
-    viewAllNews: "XEM TẤT CẢ TIN TỨC",
     backToNews: "Quay lại trang tin tức",
     readMore: "Xem chi tiết",
     author: "Tác giả",
@@ -421,6 +424,12 @@ export const translations = {
     freightForwardingService: "Freight Forwarding Services",
     landBusinessService: "Land Business Services",
     allServices: "All Services",
+
+    // Service descriptions for homepage
+    logisticsSupportDesc: "End-to-end logistics solutions for all business needs",
+    customsAgentDesc: "Trusted representative for all customs procedures",
+    freightForwardingDesc: "Global shipping network with trusted partners",
+    landBusinessDesc: "Land business services at strategic Chi Ma border location",
 
     // Hero Section
     heroTitle: "Global Logistics Solutions",
@@ -623,7 +632,7 @@ export const translations = {
     sendContact: "SEND CONTACT",
     messageContent: "Message Content",
     requiredFields: "* Required fields. We will respond within 24 hours.",
-    officeLocation: "OFFICE LOCATION",
+    officeLocation: "COMPANY LOCATION",
     officeLocationDesc: "Located at strategic position right at Chi Ma border gate",
     travelGuide: "TRAVEL GUIDE",
     fromHanoi: "From Hanoi:",
@@ -789,13 +798,10 @@ export const translations = {
     allNews: "All",
     eventsNews: "EVENT NEWS",
     internalNews: "INTERNAL NEWS", 
-    industryNews: "INDUSTRY NEWS",
     knowledgeNews: "KNOWLEDGE",
     latestNews: "LATEST NEWS",
     hotNews: "FEATURED NEWS",
     relatedNews: "RELATED NEWS",
-    viewMore: "VIEW MORE",
-    viewAllNews: "VIEW ALL NEWS",
     backToNews: "Back to news page",
     readMore: "Read more",
     author: "Author",
@@ -824,6 +830,12 @@ export const translations = {
     freightForwardingService: "货物运输服务",
     landBusinessService: "土地商业服务",
     allServices: "全部服务",
+
+    // Service descriptions for homepage
+    logisticsSupportDesc: "满足所有业务需求的端到端物流解决方案",
+    customsAgentDesc: "所有海关程序的可信代表",
+    freightForwardingDesc: "与可信合作伙伴的全球运输网络",
+    landBusinessDesc: "芝麻口岸战略位置的土地商业服务",
 
     // Hero Section
     heroTitle: "全球物流解决方案",
@@ -1184,13 +1196,10 @@ export const translations = {
     allNews: "全部",
     eventsNews: "活动新闻",
     internalNews: "内部新闻", 
-    industryNews: "行业新闻",
     knowledgeNews: "知识",
     latestNews: "最新新闻",
     hotNews: "热门新闻",
     relatedNews: "相关新闻",
-    viewMore: "查看更多",
-    viewAllNews: "查看所有新闻",
     backToNews: "返回新闻页面",
     readMore: "阅读更多",
     author: "作者",
