@@ -50,8 +50,8 @@ export function StatisticsBar() {
   const { t } = useLanguage()
 
   return (
-    <section className="py-16 bg-white shadow-lg relative -mt-20 z-10 mx-4 md:mx-8 rounded-lg">
-      <div className="container mx-auto px-4">
+    <section className="py-16 bg-white shadow-lg relative -mt-20 z-10">
+      <div className="w-full">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, index) => (
             <div key={index} className="text-center">
