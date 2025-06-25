@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:admin123@localhost:3306/chima_htt"
+}
+
+model User {
+  id            Int          @id @default(autoincrement())
+  username      String       @unique
+  password_hash String
+  role_id       Int
+  avatar        String?
+  email         String?      @unique
+  job_articles  JobArticle[]
+  News          News[]
+  role          Role         @relation(fields: [role_id], references: [id])
+
+  @@index([role_id], map: "User_role_id_fkey")
+}
+
+model Role {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  users       User[]
+  permissions Permission[] @relation("RolePermissions")
+}
+
+model Permission {
+  id      Int    @id @default(autoincrement())
+  action  String
+  subject String
+  roles   Role[] @relation("RolePermissions")
+
+  @@unique([action, subject])
+}
+
+model JobArticle {
+  id            Int                     @id @default(autoincrement())
+  author_id     Int
+  status        ArticleStatus
+  published_at  DateTime?
+  created_at    DateTime                @default(now())
+  job_deadline  DateTime
+  primary_image String
+  updated_at    DateTime                @updatedAt
+  author        User                    @relation(fields: [author_id], references: [id])
+  translations  JobArticleTranslation[]
+
+  @@index([author_id], map: "JobArticle_author_id_fkey")
+}
+
+model JobArticleTranslation {
+  id               Int        @id @default(autoincrement())
+  language         String
+  slug             String?
+  content          String?    @db.Text
+  job_article_id   Int
+  job_benefits     String?    @db.Text
+  job_description  String?    @db.Text
+  job_location     String
+  job_position     String
+  job_requirements String?    @db.Text
+  job_title        String
+  meta_description String?    @db.Text
+  meta_title       String?
+  job_article      JobArticle @relation(fields: [job_article_id], references: [id], onDelete: Cascade)
+
+  @@unique([job_article_id, language])
+  @@unique([slug, language])
+}
+
+model NewsCategory {
+  id           Int                       @id @default(autoincrement())
+  News         News[]
+  translations NewsCategoryTranslation[]
+}
+
+model NewsCategoryTranslation {
+  id               Int          @id @default(autoincrement())
+  language         String
+  name             String
+  news_category_id Int
+  news_category    NewsCategory @relation(fields: [news_category_id], references: [id], onDelete: Cascade)
+
+  @@unique([news_category_id, language])
+  @@unique([language, name])
+}
+
+model SystemConfig {
+  id         Int      @id @default(autoincrement())
+  key        String   @unique
+  value      String   @db.Text
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model News {
+  id              Int               @id @default(autoincrement())
+  main_image      String
+  published_at    DateTime          @default(now())
+  author_id       Int
+  tag             String?
+  category_id     Int
+  User            User              @relation(fields: [author_id], references: [id], onDelete: NoAction)
+  NewsCategory    NewsCategory      @relation(fields: [category_id], references: [id], onDelete: NoAction)
+  NewsTranslation NewsTranslation[]
+
+  @@index([author_id], map: "News_author_id_fkey")
+  @@index([category_id], map: "News_category_id_fkey")
+}
+
+model NewsTranslation {
+  id       Int    @id @default(autoincrement())
+  news_id  Int
+  language String @db.VarChar(10)
+  title    String
+  content  String @db.Text
+  News     News   @relation(fields: [news_id], references: [id], onDelete: Cascade)
+
+  @@unique([news_id, language])
+}
+
+model Service {
+  id                 Int                  @id @default(autoincrement())
+  main_image         String
+  ServiceTranslation ServiceTranslation[]
+}
+
+model ServiceTranslation {
+  id         Int     @id @default(autoincrement())
+  service_id Int
+  language   String  @db.VarChar(10)
+  title      String
+  content    String  @db.Text
+  features   Json
+  Service    Service @relation(fields: [service_id], references: [id], onDelete: Cascade)
+
+  @@unique([service_id, language])
+}
+
+enum ArticleStatus {
+  draft
+  published
+}

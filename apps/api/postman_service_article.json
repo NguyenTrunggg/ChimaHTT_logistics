@@ -1,0 +1,26 @@
+{
+  "name": "ServiceArticle",
+  "item": [
+    {
+      "name": "Create ServiceArticle",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{JWT}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"primary_image\": \"https://example.com/image.jpg\",\n  \"second_image\": \"https://example.com/image2.jpg\",\n  \"status\": \"draft\",\n  \"translations\": {\n    \"vi\": {\n      \"primary_title\": \"Tiêu đề chính\",\n      \"content\": \"Nội dung dịch vụ\"\n    }\n  },\n  \"service_contents\": [\n    {\n      \"images\": [{ \"url\": \"https://example.com/content-img.jpg\" }],\n      \"translations\": {\n        \"vi\": { \"title\": \"Tiêu đề nội dung\", \"content\": \"Nội dung chi tiết\" }\n      }\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{baseURL}}:{{PORT}}/service-articles",
+          "host": ["{{baseURL}}"],
+          "port": "{{PORT}}",
+          "path": ["service-articles"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

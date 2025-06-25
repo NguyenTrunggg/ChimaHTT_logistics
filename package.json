@@ -1,0 +1,19 @@
+{
+  "name": "chi-ma-htt-be",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "pnpm --filter api dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@9.4.0",
+  "prisma": {
+    "seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' packages/db/prisma/seed.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
