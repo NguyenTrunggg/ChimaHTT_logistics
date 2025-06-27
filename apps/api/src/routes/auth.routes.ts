@@ -3,6 +3,9 @@ import * as authController from "../controllers/auth.controller";
 
 const router = Router();
 
+router.get("/me", authController.me);
+
+
 router.post("/login", authController.login);
 router.post("/change-password", authController.changePassword);
 

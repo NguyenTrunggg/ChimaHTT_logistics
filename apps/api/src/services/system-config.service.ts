@@ -1,4 +1,5 @@
 import prisma from "../config/prisma";
+import { testApiKeyValue } from "../utils/gemini-translate";
 
 export const listConfigs = async () => {
   return prisma.systemConfig.findMany();
@@ -23,4 +24,24 @@ export const updateConfig = async (key: string, value: string) => {
 
 export const deleteConfig = async (key: string) => {
   return prisma.systemConfig.delete({ where: { key } });
+};
+
+/**
+ * Test if a Gemini API key is valid using the existing gemini-translate infrastructure
+ */
+export const testGeminiApiKey = async (apiKey: string): Promise<boolean> => {
+  try {
+    console.log(`Testing API key: ${apiKey.substring(0, 10)}...`);
+    
+    // Use the testApiKeyValue function from gemini-translate.ts
+    const isValid = await testApiKeyValue(apiKey);
+    
+    console.log(`API Key test result: ${isValid ? 'VALID' : 'INVALID'}`);
+    
+    return isValid;
+    
+  } catch (error: any) {
+    console.error("Error testing Gemini API key:", error);
+    return false;
+  }
 };

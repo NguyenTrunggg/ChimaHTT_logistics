@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import RoleService from "../services/role.service";
+import prisma from "../config/prisma";
 
 const RoleController = {
   async create(req: Request, res: Response) {
@@ -44,6 +45,16 @@ const RoleController = {
     try {
       const roles = await RoleService.listRoles(req.query);
       res.json(roles);
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  },
+  async getAllPermissions(req: Request, res: Response) {
+    try {
+      const permissions = await prisma.permission.findMany({
+        orderBy: { id: 'asc' }
+      });
+      res.json(permissions);
     } catch (error: any) {
       res.status(400).json({ message: error.message });
     }

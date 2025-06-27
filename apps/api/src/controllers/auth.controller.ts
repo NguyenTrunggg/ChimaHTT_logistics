@@ -29,3 +29,19 @@ export const resetPassword = async (req: Request, res: Response) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+export const me = async (req: Request, res: Response) => {
+  try {
+    // get token from header
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
+    const user = await authService.me(token);
+    res.json(user);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
+  }
+};
+

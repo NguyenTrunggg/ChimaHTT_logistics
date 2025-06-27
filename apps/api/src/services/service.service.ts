@@ -53,25 +53,37 @@ export class ServiceService {
       },
     });
 
-    // Dịch và tạo bản tiếng Anh
-    const enTranslation = await this.translateServiceData(dto, 'en');
-    await this.prisma.serviceTranslation.create({
-      data: {
-        service_id: service.id,
-        language: 'en',
-        ...enTranslation,
-      },
-    });
+    try {
+      const languages: ("en" | "zh")[] = ["en", "zh"];
 
-    // Dịch và tạo bản tiếng Trung
-    const zhTranslation = await this.translateServiceData(dto, 'zh');
-    await this.prisma.serviceTranslation.create({
-      data: {
-        service_id: service.id,
-        language: 'zh',
-        ...zhTranslation,
-      },
-    });
+      // Run translation for all languages concurrently
+      const translationResults = await Promise.allSettled(
+        languages.map((lang) => this.translateServiceData(dto, lang))
+      );
+
+      // Persist only successful translations
+      await Promise.all(
+        translationResults.map((result, index) => {
+          if (result.status === "fulfilled") {
+            const lang = languages[index];
+            return this.prisma.serviceTranslation.create({
+              data: {
+                service_id: service.id,
+                language: lang,
+                ...result.value,
+              },
+            });
+          }
+          console.warn(`Translation failed for language ${languages[index]}:`, result.reason);
+          return Promise.resolve();
+        })
+      );
+
+      console.log("Successfully created service with available translations");
+    } catch (translationError) {
+      console.warn('Translation processing encountered errors, but Vietnamese version was created successfully:', translationError);
+      // Vietnamese record already exists; nothing else to do
+    }
 
     return this.findOne(service.id);
   }
@@ -105,40 +117,44 @@ export class ServiceService {
       },
     });
 
-    // Dịch và cập nhật bản tiếng Anh
-    const enTranslation = await this.translateServiceData(dto, 'en');
-    const existingEnTranslation = service.ServiceTranslation.find(t => t.language === 'en');
-    if (existingEnTranslation) {
-      await this.prisma.serviceTranslation.update({
-        where: { id: existingEnTranslation.id },
-        data: enTranslation,
-      });
-    } else {
-      await this.prisma.serviceTranslation.create({
-        data: {
-          service_id: id,
-          language: 'en',
-          ...enTranslation,
-        },
-      });
-    }
+    try {
+      const languages: ("en" | "zh")[] = ["en", "zh"];
 
-    // Dịch và cập nhật bản tiếng Trung
-    const zhTranslation = await this.translateServiceData(dto, 'zh');
-    const existingZhTranslation = service.ServiceTranslation.find(t => t.language === 'zh');
-    if (existingZhTranslation) {
-      await this.prisma.serviceTranslation.update({
-        where: { id: existingZhTranslation.id },
-        data: zhTranslation,
-      });
-    } else {
-      await this.prisma.serviceTranslation.create({
-        data: {
-          service_id: id,
-          language: 'zh',
-          ...zhTranslation,
-        },
-      });
+      // Translate all languages concurrently
+      const translationResults = await Promise.allSettled(
+        languages.map((lang) => this.translateServiceData(dto, lang))
+      );
+
+      await Promise.all(
+        translationResults.map((result, index) => {
+          const lang = languages[index];
+          const existingTranslation = service.ServiceTranslation.find((t) => t.language === lang);
+
+          if (result.status === "fulfilled") {
+            if (existingTranslation) {
+              return this.prisma.serviceTranslation.update({
+                where: { id: existingTranslation.id },
+                data: result.value,
+              });
+            }
+            return this.prisma.serviceTranslation.create({
+              data: {
+                service_id: id,
+                language: lang,
+                ...result.value,
+              },
+            });
+          }
+
+          console.warn(`Translation failed for language ${lang}:`, result.reason);
+          return Promise.resolve();
+        })
+      );
+
+      console.log('Successfully updated service with available translations');
+    } catch (translationError) {
+      console.warn('Translation processing encountered errors during update, but Vietnamese version was updated successfully:', translationError);
+      // Continue without updating translations
     }
 
     return this.findOne(id);

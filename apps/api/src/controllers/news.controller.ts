@@ -73,9 +73,7 @@ export class NewsController {
         categoryId: categoryId ? Number(categoryId) : undefined,
       });
 
-      res.json({
-        data: result,
-      });
+      res.json(result);
     } catch (error: any) {
       res.status(400).json({ message: error.message });
     }

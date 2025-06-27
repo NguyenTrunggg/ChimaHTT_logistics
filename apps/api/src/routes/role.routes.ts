@@ -14,6 +14,7 @@ router.post(
   RoleController.create
 );
 router.get("/", authenticateJWT, authorizePermissions("role.read"), RoleController.list);
+router.get("/permissions", authenticateJWT, authorizePermissions("role.read"), RoleController.getAllPermissions);
 router.get(
   "/:id",
   authenticateJWT,

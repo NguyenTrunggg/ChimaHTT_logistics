@@ -134,6 +134,23 @@ async function main() {
 
   console.log(`Seeded 2 users`);
 
+  // Add Gemini API keys (placeholder for development)
+  const geminiConfigs = [
+    { key: 'GEMINI_API_KEY_SERVICE', value: 'your-gemini-api-key-for-service' },
+    { key: 'GEMINI_API_KEY_JOB', value: 'your-gemini-api-key-for-job' },
+    { key: 'GEMINI_API_KEY_NEWS', value: 'your-gemini-api-key-for-news' },
+  ];
+
+  for (const config of geminiConfigs) {
+    await prisma.systemConfig.upsert({
+      where: { key: config.key },
+      update: {},
+      create: config,
+    });
+  }
+
+  console.log('✅ Gemini API keys seeded (placeholder values)');
+
   console.log(`Seeding finished.`);
 }
 

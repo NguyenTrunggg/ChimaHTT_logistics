@@ -1,7 +1,7 @@
 import { PrismaClient, ArticleStatus } from '@prisma/client';
 import { CreateJobArticleDto, UpdateJobArticleDto } from '../DTOs/request/job-article.input';
-import { slugify, generateUniqueSlug } from '../utils/slugify';
-import { translateJob } from '../utils/gemini-translate';
+import { generateUniqueSlug } from '../utils/slugify';
+import { translateJob, translateSingleText } from '../utils/gemini-translate';
 import { buildPaginationResult } from '../utils/pagination';
 
 export class JobArticleService {
@@ -23,10 +23,13 @@ export class JobArticleService {
     content?: string;
   }, targetLang: "en" | "zh") {
 
-    if (!data.job_title || !data.job_position || !data.job_location) {
-      throw new Error('Job title, position, and location are required for translation');
+    if (!data.job_title) {
+      throw new Error('Job title is required for translation');
     }
-    const translation = await translateJob({
+
+    try {
+      // Translate main job fields
+      const jobTranslation = await translateJob({
       title: data.job_title,
       position: data.job_position,
       location: data.job_location,
@@ -36,31 +39,41 @@ export class JobArticleService {
       targetLang,
     });
 
+      // Translate meta fields and content concurrently and tolerate partial failures
+      const metaResults = await Promise.allSettled([
+        data.meta_title ? translateSingleText(data.meta_title, targetLang) : Promise.resolve(''),
+        data.meta_description ? translateSingleText(data.meta_description, targetLang) : Promise.resolve(''),
+        data.content ? translateSingleText(data.content, targetLang) : Promise.resolve(''),
+      ]);
 
-    // Handle meta fields and content separately
-    const [metaTitleTranslation, metaDescTranslation, contentTranslation] = await Promise.all([
-      data.meta_title ? translateJob({ title: data.meta_title, position: "", location: "", targetLang }) : Promise.resolve(undefined),
-      data.meta_description ? translateJob({ title: data.meta_description, position: "", location: "", targetLang }) : Promise.resolve(undefined),
-      data.content ? translateJob({ title: data.content, position: "", location: "", targetLang }) : Promise.resolve(undefined),
-    ]);
+      const metaTitleTranslation = metaResults[0].status === 'fulfilled' ? metaResults[0].value : '';
+      const metaDescTranslation = metaResults[1].status === 'fulfilled' ? metaResults[1].value : '';
+      const contentTranslation  = metaResults[2].status === 'fulfilled' ? metaResults[2].value : '';
 
     return {
-      job_title: translation.title,
-      job_position: translation.position,
-      job_location: translation.location,
-      job_benefits: translation.benefits,
-      job_description: translation.description,
-      job_requirements: translation.requirements,
-      meta_title: metaTitleTranslation?.title,
-      meta_description: metaDescTranslation?.title,
-      content: contentTranslation?.title,
-      slug: generateUniqueSlug(translation.title),
+        job_title: jobTranslation.title,
+        job_position: jobTranslation.position || '',
+        job_location: jobTranslation.location || '',
+        job_benefits: jobTranslation.benefits,
+        job_description: jobTranslation.description,
+        job_requirements: jobTranslation.requirements,
+        meta_title: metaTitleTranslation || undefined,
+        meta_description: metaDescTranslation || undefined,
+        content: contentTranslation || undefined,
+        slug: generateUniqueSlug(jobTranslation.title),
     };
+    } catch (error) {
+      console.error(`Translation failed for language ${targetLang}:`, error);
+      throw new Error(`Translation to ${targetLang} failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   }
 
   async create(authorId: number, dto: CreateJobArticleDto) {
+    // Use transaction to ensure rollback on failure
+    return await this.prisma.$transaction(async (tx) => {
+      try {
     // Tạo bản ghi tiếng Việt
-    const jobArticle = await this.prisma.jobArticle.create({
+        const jobArticle = await tx.jobArticle.create({
       data: {
         author_id: authorId,
         primary_image: dto.primary_image,
@@ -93,31 +106,51 @@ export class JobArticleService {
       },
     });
 
-    // Dịch và tạo bản tiếng Anh
-    const enTranslation = await this.translateJobArticleData(dto, 'en');
-    await this.prisma.jobArticleTranslation.create({
-      data: {
-        job_article_id: jobArticle.id,
-        language: 'en',
-        ...enTranslation,
-      },
-    });
+        // Try to create translations concurrently; ignore failures for individual languages
+        try {
+          const languages: ("en" | "zh")[] = ["en", "zh"];
 
-    // Dịch và tạo bản tiếng Trung
-    const zhTranslation = await this.translateJobArticleData(dto, 'zh');
-    await this.prisma.jobArticleTranslation.create({
-      data: {
-        job_article_id: jobArticle.id,
-        language: 'zh',
-        ...zhTranslation,
-      },
-    });
+          // Run translation for all languages concurrently
+          const translationResults = await Promise.allSettled(
+            languages.map((lang) => this.translateJobArticleData(dto, lang))
+          );
 
-    return this.findOne(jobArticle.id);
+          // Persist only successful translations
+          await Promise.all(
+            translationResults.map((result, index) => {
+              if (result.status === "fulfilled") {
+                const lang = languages[index];
+                return tx.jobArticleTranslation.create({
+                  data: {
+                    job_article_id: jobArticle.id,
+                    language: lang,
+                    ...result.value,
+                  },
+                });
+              }
+              console.warn(`Translation failed for language ${languages[index]}:`, result.reason);
+              return Promise.resolve();
+            })
+          );
+
+          console.log("Successfully created job article with available translations");
+        } catch (translationError) {
+          console.warn('Translation processing encountered errors, but Vietnamese version was created successfully:', translationError);
+          // Vietnamese record already exists; nothing else to do
+        }
+
+        return jobArticle;
+      } catch (error) {
+        console.error('Failed to create job article:', error);
+        throw error; // This will trigger transaction rollback
+      }
+    });
   }
 
   async update(id: number, dto: UpdateJobArticleDto) {
-    const jobArticle = await this.prisma.jobArticle.findUnique({
+    return await this.prisma.$transaction(async (tx) => {
+      try {
+        const jobArticle = await tx.jobArticle.findUnique({
       where: { id },
       include: { translations: true },
     });
@@ -128,7 +161,7 @@ export class JobArticleService {
 
     // Cập nhật bản tiếng Việt
     const viTranslation = jobArticle.translations.find(t => t.language === 'vi');
-    await this.prisma.jobArticle.update({
+        await tx.jobArticle.update({
       where: { id },
       data: {
         primary_image: dto.primary_image,
@@ -154,43 +187,53 @@ export class JobArticleService {
       },
     });
 
-    // Dịch và cập nhật bản tiếng Anh
-    const enTranslation = await this.translateJobArticleData(dto, 'en');
-    const existingEnTranslation = jobArticle.translations.find(t => t.language === 'en');
-    if (existingEnTranslation) {
-      await this.prisma.jobArticleTranslation.update({
-        where: { id: existingEnTranslation.id },
-        data: enTranslation,
-      });
-    } else {
-      await this.prisma.jobArticleTranslation.create({
-        data: {
-          job_article_id: id,
-          language: 'en',
-          ...enTranslation,
-        },
-      });
-    }
+        // Try to update translations concurrently; ignore failures for individual languages
+        try {
+          const languages: ("en" | "zh")[] = ["en", "zh"];
 
-    // Dịch và cập nhật bản tiếng Trung
-    const zhTranslation = await this.translateJobArticleData(dto, 'zh');
-    const existingZhTranslation = jobArticle.translations.find(t => t.language === 'zh');
-    if (existingZhTranslation) {
-      await this.prisma.jobArticleTranslation.update({
-        where: { id: existingZhTranslation.id },
-        data: zhTranslation,
-      });
-    } else {
-      await this.prisma.jobArticleTranslation.create({
-        data: {
-          job_article_id: id,
-          language: 'zh',
-          ...zhTranslation,
-        },
-      });
-    }
+          // Translate all languages concurrently
+          const translationResults = await Promise.allSettled(
+            languages.map((lang) => this.translateJobArticleData(dto, lang))
+          );
 
-    return this.findOne(id);
+          await Promise.all(
+            translationResults.map((result, index) => {
+              const lang = languages[index];
+              const existingTranslation = jobArticle.translations.find((t) => t.language === lang);
+
+              if (result.status === "fulfilled") {
+                if (existingTranslation) {
+                  return tx.jobArticleTranslation.update({
+                    where: { id: existingTranslation.id },
+                    data: result.value,
+                  });
+                }
+                return tx.jobArticleTranslation.create({
+                  data: {
+                    job_article_id: id,
+                    language: lang,
+                    ...result.value,
+                  },
+                });
+              }
+
+              console.warn(`Translation failed for language ${lang}:`, result.reason);
+              return Promise.resolve();
+            })
+          );
+
+          console.log('Successfully updated job article with available translations');
+        } catch (translationError) {
+          console.warn('Translation processing encountered errors during update, but Vietnamese version was updated successfully:', translationError);
+          // Continue without updating translations
+        }
+
+        return await this.findOne(id);
+      } catch (error) {
+        console.error('Failed to update job article with translations:', error);
+        throw error; // This will trigger transaction rollback
+      }
+    });
   }
 
   async findAll(params: {

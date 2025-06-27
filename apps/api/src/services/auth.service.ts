@@ -74,3 +74,27 @@ export const changePassword = async (
     data: { password_hash: newPasswordHash },
   });
 };
+
+export const me = async (token: string) => {
+  const jwtSecret = process.env.JWT_SECRET;
+  if (!jwtSecret) {
+    throw new Error("Authentication configuration error.");
+  }
+  const decoded = jwt.verify(token, jwtSecret) as { userId: number };
+  const user = await prisma.user.findUnique(
+    { where: { id: decoded.userId }, 
+    include: 
+    { 
+      role: {
+        include: {
+            permissions: true,
+          },
+    },
+  },
+});
+  if (!user) {
+    throw new Error("User not found");
+  }
+  const { password_hash, ...userWithoutPassword } = user;
+  return userWithoutPassword;
+};

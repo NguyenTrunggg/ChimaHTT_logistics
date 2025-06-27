@@ -9,5 +9,6 @@ router.get("/:key", authenticateJWT, authorizePermissions("system-config.read"),
 router.post("/", authenticateJWT, authorizePermissions("system-config.update"), systemConfigController.createConfig);
 router.put("/:key", authenticateJWT, authorizePermissions("system-config.update"), systemConfigController.updateConfig);
 router.delete("/:key", authenticateJWT, authorizePermissions("system-config.delete"), systemConfigController.deleteConfig);
+router.post("/test-api-key", authenticateJWT, authorizePermissions("system-config.read"), systemConfigController.testApiKey);
 
 export default router;

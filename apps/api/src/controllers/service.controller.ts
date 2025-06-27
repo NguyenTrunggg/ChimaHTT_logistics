@@ -61,9 +61,7 @@ export class ServiceController {
       const pagination = getPagination(req.query);
 
       const result = await service.findAll(language as string, pagination);
-      res.json({
-        data: result,
-      });
+      res.json(result);
     } catch (error: any) {
       res.status(400).json({ message: error.message });
     }
@@ -77,9 +75,7 @@ export class ServiceController {
       if (!result) {
         return res.status(404).json({ message: "Service not found" });
       }
-      res.json({
-        data: result,
-      });
+      res.json(result);
     } catch (error: any) {
       res.status(400).json({ message: error.message });
     }

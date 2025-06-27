@@ -51,3 +51,38 @@ export const deleteConfig = async (req: Request, res: Response) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+export const testApiKey = async (req: Request, res: Response) => {
+  try {
+    const { key, value } = req.body;
+    
+    if (!key || !value) {
+      return res.status(400).json({ 
+        message: "Both 'key' and 'value' are required",
+        valid: false 
+      });
+    }
+
+    // Validate the API key format first
+    if (!value.startsWith("AIza") || value.length < 35) {
+      return res.status(400).json({ 
+        message: "Invalid API key format",
+        valid: false 
+      });
+    }
+
+    const isValid = await systemConfigService.testGeminiApiKey(value);
+    
+    res.json({ 
+      valid: isValid,
+      message: isValid ? "API key is valid" : "API key is invalid or expired",
+      key
+    });
+  } catch (error: any) {
+    console.error("Test API key error:", error);
+    res.status(500).json({ 
+      message: error.message || "Failed to test API key",
+      valid: false 
+    });
+  }
+};

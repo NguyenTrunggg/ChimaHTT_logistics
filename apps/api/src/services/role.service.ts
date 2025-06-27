@@ -2,9 +2,37 @@ import prisma from "../config/prisma";
 import { getPagination, buildPaginationResult } from "../utils/pagination";
 
 class RoleService {
-  async createRole(data: { name: string }) {
+  async createRole(data: { name: string; permissions?: number[] }) {
     try {
-      return await prisma.role.create({ data });
+      const { permissions, ...roleData } = data;
+      
+      const createData: any = {
+        ...roleData,
+      };
+
+      // If permissions are provided, connect them using the proper Prisma syntax
+      if (permissions && permissions.length > 0) {
+        // Filter to only include existing permission IDs
+        const existingPermissions = await prisma.permission.findMany({
+          where: { id: { in: permissions } },
+          select: { id: true }
+        });
+        
+        const validPermissionIds = existingPermissions.map(p => p.id);
+        
+        console.log(`Requested permissions: ${permissions.length}, Valid permissions: ${validPermissionIds.length}`);
+        
+        if (validPermissionIds.length > 0) {
+          createData.permissions = {
+            connect: validPermissionIds.map(id => ({ id }))
+          };
+        }
+      }
+
+      return await prisma.role.create({ 
+        data: createData,
+        include: { permissions: true, users: true }
+      });
     } catch (error) {
       throw new Error("Failed to create role: " + (error as Error).message);
     }
@@ -23,10 +51,48 @@ class RoleService {
 
   async updateRole(id: number, data: any) {
     try {
+      const { permissions, ...roleData } = data;
+      
+      const updateData: any = {
+        ...roleData,
+      };
+
+      // If permissions are provided, replace all existing permissions
+      if (permissions !== undefined) {
+        if (Array.isArray(permissions) && permissions.length > 0) {
+          // Filter to only include existing permission IDs
+          const existingPermissions = await prisma.permission.findMany({
+            where: { id: { in: permissions } },
+            select: { id: true }
+          });
+          
+          const validPermissionIds = existingPermissions.map(p => p.id);
+          
+          console.log(`Requested permissions: ${permissions.length}, Valid permissions: ${validPermissionIds.length}`);
+          
+          if (validPermissionIds.length > 0) {
+            updateData.permissions = {
+              set: [], // Clear all existing connections
+              connect: validPermissionIds.map((id: number) => ({ id }))
+            };
+          } else {
+            // If no valid permissions, just clear all connections
+            updateData.permissions = {
+              set: []
+            };
+          }
+        } else {
+          // If permissions array is empty, just clear all connections
+          updateData.permissions = {
+            set: []
+          };
+        }
+      }
+
       return await prisma.role.update({
         where: { id },
-        data,
-        include: { permissions: true },
+        data: updateData,
+        include: { permissions: true, users: true },
       });
     } catch (error) {
       throw new Error("Failed to update role: " + (error as Error).message);
@@ -51,7 +117,7 @@ class RoleService {
       const [data, total] = await Promise.all([
         prisma.role.findMany({
           where,
-          include: { permissions: true },
+          include: { permissions: true, users: true },
           skip,
           take,
           orderBy: { id: "asc" },
