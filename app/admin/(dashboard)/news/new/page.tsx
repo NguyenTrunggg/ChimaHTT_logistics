@@ -1,0 +1,57 @@
+"use client";
+
+import NewsForm from "@/components/admin/news/news-form";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowLeft, Newspaper, Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
+
+export default function NewNewsPage() {
+  const router = useRouter();
+  
+  // Mock categories - in real app, fetch from API
+  const categories: { id: number; name: string }[] = [
+    { id: 1, name: "Tin tức chung" },
+    { id: 2, name: "Thông báo" },
+    { id: 3, name: "Sự kiện" },
+  ];
+
+  return (
+    <div className="space-y-8 max-w-7xl mx-auto">
+      {/* Enhanced Header */}
+      <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-8 rounded-2xl border border-green-200 shadow-sm">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Button 
+              variant="ghost" 
+              onClick={() => router.back()} 
+              className="p-2 h-auto hover:bg-white/80 rounded-xl transition-all duration-200"
+            >
+              <ArrowLeft className="h-5 w-5 mr-2" />
+              Quay lại
+            </Button>
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-white rounded-2xl shadow-sm">
+                <Newspaper className="h-8 w-8 text-green-600" />
+              </div>
+              <div>
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-green-700 bg-clip-text text-transparent">
+                  Tạo bài viết mới
+                </h1>
+                <p className="text-gray-600 mt-1">
+                  Thêm bài viết tin tức mới vào hệ thống
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="p-4 bg-white rounded-2xl shadow-sm">
+            <Plus className="h-8 w-8 text-green-600" />
+          </div>
+        </div>
+      </div>
+
+      {/* Form */}
+      <NewsForm categories={categories} />
+    </div>
+  );
+} 

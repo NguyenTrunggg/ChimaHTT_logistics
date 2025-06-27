@@ -10,6 +10,12 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 shadow-lg;
+  }
+  .dark .glass {
+    @apply bg-slate-900/30 border-slate-300/10;
+  }
 }
 
 @layer base {

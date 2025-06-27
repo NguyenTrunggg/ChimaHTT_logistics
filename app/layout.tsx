@@ -1,10 +1,8 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { FloatingContact } from "@/components/floating-contact"
 import { LanguageProvider } from "@/contexts/language-context"
+import ClientRootLayout from "@/components/client-root-layout"
 
 export const metadata: Metadata = {
   title: "Chi Ma HTT Logistics - Giải pháp Logistics Toàn cầu",
@@ -29,10 +27,7 @@ export default function RootLayout({
     <html lang="vi">
       <body className="antialiased">
         <LanguageProvider>
-          <Header />
-          {children}
-          <Footer />
-          <FloatingContact />
+          <ClientRootLayout>{children}</ClientRootLayout>
         </LanguageProvider>
       </body>
     </html>

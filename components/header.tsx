@@ -18,6 +18,7 @@ export function Header() {
   const navigation = [
     { name: t("home"), href: "/" },
     { name: t("about"), href: "/about" },
+    { name: t("trackContainer"), href: "/tracking" },
     { name: t("news"), href: "/news" },
     { name: t("careers"), href: "/careers" },
   ]
@@ -101,8 +102,16 @@ export function Header() {
               {t("about")}
             </Link>
             
-            {/* Các mục còn lại (trừ about) */}
-            {navigation.slice(2).map((item) => (
+            {/* Tra cứu Container - đặt ngay sau Về chúng tôi */}
+            <Link
+              href="/tracking"
+              className="text-white hover:text-white/80 transition-colors font-medium"
+            >
+              {t("trackContainer")}
+            </Link>
+            
+            {/* Các mục còn lại (news, careers) */}
+            {navigation.slice(3).map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
@@ -197,8 +206,17 @@ export function Header() {
                     {t("about")}
                   </Link>
                   
-                  {/* Các mục còn lại (trừ about) */}
-                  {navigation.slice(2).map((item) => (
+                  {/* Tra cứu Container - đặt ngay sau Về chúng tôi */}
+                  <Link
+                    href="/tracking"
+                    className="text-white hover:text-[#00b764] transition-colors text-lg font-medium"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {t("trackContainer")}
+                  </Link>
+                  
+                  {/* Các mục còn lại (news, careers) */}
+                  {navigation.slice(3).map((item) => (
                     <Link
                       key={item.name}
                       href={item.href}

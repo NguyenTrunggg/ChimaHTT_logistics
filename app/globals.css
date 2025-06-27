@@ -40,6 +40,13 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+
+  .glass {
+    @apply backdrop-blur-md bg-white/10 border border-white/20 shadow-lg;
+  }
+  .dark .glass {
+    @apply bg-slate-900/30 border-slate-300/10;
+  }
 }
 
 /* Custom scrollbar */
