@@ -1,7 +1,7 @@
 // Environment configuration
 export const config = {
   // API Configuration
-  API_BASE_URL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1",
+  API_BASE_URL: process.env.NEXT_PUBLIC_API_URL || "http://103.130.216.84:5000/api/v1",
 
   // Authentication endpoints
   AUTH_ENDPOINTS: {
