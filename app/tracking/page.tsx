@@ -237,25 +237,25 @@ export default function ContainerTrackingPage() {
               </div>
             </div>
 
-            <div className="flex gap-4">
-              <div className="flex-1 relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <div className="flex flex-col gap-4 md:flex-row">
+              <div className="relative flex-1">
+                <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
                 <Input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder={
-                    searchType === "container" 
-                      ? t("trackingEnterContainer") 
+                    searchType === "container"
+                      ? t("trackingEnterContainer")
                       : t("trackingEnterVehicle")
                   }
-                  className="pl-12 h-14 text-lg rounded-xl border-gray-200 focus:border-green-400 focus:ring-green-200 transition-all duration-200 bg-white/80"
+                  className="w-full rounded-xl border-gray-200 bg-white/80 pl-12 text-lg h-14 transition-all duration-200 focus:border-green-400 focus:ring-green-200"
                 />
               </div>
-              <Button 
-                onClick={handleSearch} 
+              <Button
+                onClick={handleSearch}
                 disabled={loading || !query.trim()}
-                className="bg-gradient-to-r from-[#00b764] to-green-600 hover:from-[#00a055] hover:to-green-700 text-white px-8 py-4 h-14 rounded-xl transition-all duration-200 hover:shadow-lg disabled:opacity-50"
+                className="h-14 w-full rounded-xl bg-gradient-to-r from-[#00b764] to-green-600 px-8 py-4 text-white transition-all duration-200 hover:shadow-lg disabled:opacity-50 hover:from-[#00a055] hover:to-green-700 md:w-auto"
               >
                 {loading ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
