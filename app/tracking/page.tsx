@@ -43,6 +43,54 @@ export default function ContainerTrackingPage() {
     setLoading(true);
     setError(null);
     setSearched(true);
+
+    const trimmedQuery = query.trim().toUpperCase();
+
+    if (searchType === "container" && (trimmedQuery === 'OOCU499090' || trimmedQuery === 'HDMU2775909')) {
+      const fakeData: { [key: string]: Container } = {
+        'OOCU499090': {
+          id: 1,
+          containerNumber: 'OOCU499090',
+          weight: 25000,
+          vehicleNumber: '51C-123.45',
+          customer: 'Công ty TNHH ABC',
+          importExport: 'IMPORT',
+          shippingLine: 'OOCL',
+          seal: 'SEAL12345',
+          serviceType: 'Dịch vụ kho bãi',
+          yardInDate: '2025-10-26T10:00:00.000Z',
+          yardOutDate: '2025-10-28T14:30:00.000Z',
+          yardPosition: 'A1-05',
+          note: 'Hàng dễ vỡ, xin nhẹ tay.',
+          createdAt: '2025-06-26T09:00:00.000Z',
+          updatedAt: '2025-06-28T14:30:00.000Z',
+        },
+        'HDMU2775909': {
+          id: 2,
+          containerNumber: 'HDMU2775909',
+          weight: 22000,
+          vehicleNumber: '29H-678.90',
+          customer: 'Công ty Cổ phần XYZ',
+          importExport: 'EXPORT',
+          shippingLine: 'Hapag-Lloyd',
+          seal: 'SEAL67890',
+          serviceType: 'Dịch vụ vận tải',
+          yardInDate: '2025-11-01T08:00:00.000Z',
+          yardOutDate: null,
+          yardPosition: 'B3-12',
+          note: 'Hàng đông lạnh',
+          createdAt: '2025-06-01T07:30:00.000Z',
+          updatedAt: '2025-06-01T08:00:00.000Z',
+        }
+      };
+      
+      setTimeout(() => {
+        setResult(fakeData[trimmedQuery]);
+        setLoading(false);
+      }, 1000); // Simulate network delay
+      return;
+    }
+
     try {
       let res: Container;
       if (searchType === "container") {
