@@ -242,6 +242,9 @@ export class NewsService {
           },
         },
         NewsTranslation: {
+          where: {
+            language,
+          },
           select: {
             language: true,
             title: true,

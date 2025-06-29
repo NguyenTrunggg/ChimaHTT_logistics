@@ -3,10 +3,11 @@ node_modules/
 */node_modules/
 **/node_modules/
 
-# Package files
+# Package files (should not be committed in most cases)
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
+.pnpm-lock.yaml
 
 # Build outputs
 dist/
@@ -107,5 +108,23 @@ temp/
 ehthumbs.db
 Thumbs.db
 
-# Test files
-test-gemini-api.js 
+# Additional development files
+.npmrc
+.yarnrc
+.pnpm-workspace-state.json
+.pnpm-workspace.yaml
+
+# Testing files
+test-gemini-api.js
+
+# Additional common patterns
+*.zip
+*.tar.gz
+*.rar
+.vscode/settings.json
+.idea/
+*.sublime-*
+
+# Prisma
+prisma/.env
+packages/db/prisma/.env 
