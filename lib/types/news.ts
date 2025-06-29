@@ -1,6 +1,5 @@
 export interface NewsTranslation {
   id: number;
-  news_id: number;
   language: string;
   title: string;
   content: string;
@@ -10,7 +9,6 @@ export interface NewsCategoryTranslation {
   id: number;
   language: string;
   name: string;
-  news_category_id: number;
 }
 
 export interface NewsCategory {
@@ -26,6 +24,17 @@ export interface NewsAuthor {
 export interface NewsArticle {
   id: number;
   main_image: string;
+  published_at: string | Date;
+  tag?: string;
+  author: NewsAuthor;
+  category: NewsCategory;
+  translations: NewsTranslation[];
+}
+
+// For backward compatibility with existing admin code that still uses snake_case keys
+export interface LegacyNewsArticle {
+  id: number;
+  main_image: string;
   published_at: string;
   author_id: number;
   tag?: string;
@@ -35,9 +44,10 @@ export interface NewsArticle {
   NewsTranslation: NewsTranslation[];
 }
 
-// For backward compatibility, add a type that supports both structures
+export type NewsArticleAny = NewsArticle | LegacyNewsArticle;
+
 export interface NewsArticleResponse {
-  data: NewsArticle[];
+  data: NewsArticleAny[];
   total: number;
   page: number;
   pageSize: number;

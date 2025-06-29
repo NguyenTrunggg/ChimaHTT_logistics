@@ -151,73 +151,73 @@ export default function NewsManagementPage() {
   // Grid view render function
   const renderGridItem = (item: NewsItem) => {
     const translation = item.NewsTranslation?.find((t: NewsTranslation) => t.language === "vi") || item.NewsTranslation?.[0];
-    return (
-      <Card 
-        key={item.id} 
+          return (
+            <Card 
+              key={item.id} 
         className="border-green-200 shadow-lg bg-gradient-to-br from-white to-green-50 hover:shadow-xl transition-all duration-300 group overflow-hidden rounded-2xl"
-      >
-        <CardHeader className="pb-4">
-          <div className="flex items-start gap-3">
-            <div className="p-2 bg-green-100 rounded-xl group-hover:bg-green-200 transition-colors duration-300">
-              <Newspaper className="h-5 w-5 text-green-600" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <CardTitle className="line-clamp-2 text-lg leading-tight text-gray-800 group-hover:text-green-700 transition-colors duration-300">
-                {translation?.title || "Tiêu đề không có"}
-              </CardTitle>
-            </div>
-          </div>
-        </CardHeader>
-        
-        <CardContent className="space-y-4">
-          <div className="relative overflow-hidden rounded-xl border border-gray-200 group-hover:border-green-300 transition-colors duration-300">
-            <img 
-              src={item.main_image || "/placeholder.jpg"} 
-              alt={translation?.title} 
-              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" 
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = "/placeholder.jpg";
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </div>
-          
-          <div className="space-y-3">
-            <p className="text-sm text-gray-600 line-clamp-3 leading-relaxed min-h-[4rem]">
-              {translation?.content || "Nội dung không có"}
-            </p>
-            
-            <div className="flex items-center gap-2 text-xs text-gray-500 bg-gray-50 px-3 py-2 rounded-lg">
-              <Calendar className="h-3 w-3" />
-              <span>{item.published_at ? format(new Date(item.published_at), "dd MMMM yyyy", { locale: vi }) : "Chưa có ngày"}</span>
-            </div>
-          </div>
-          
-          <div className="flex gap-3 pt-2">
-            <Button 
-              size="sm" 
-              variant="outline" 
-              className="flex-1 border-green-200 text-green-700 hover:bg-green-50 hover:border-green-300 rounded-xl transition-all duration-200" 
-              asChild
             >
+              <CardHeader className="pb-4">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-green-100 rounded-xl group-hover:bg-green-200 transition-colors duration-300">
+                    <Newspaper className="h-5 w-5 text-green-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <CardTitle className="line-clamp-2 text-lg leading-tight text-gray-800 group-hover:text-green-700 transition-colors duration-300">
+                      {translation?.title || "Tiêu đề không có"}
+                    </CardTitle>
+                  </div>
+                </div>
+              </CardHeader>
+              
+              <CardContent className="space-y-4">
+                <div className="relative overflow-hidden rounded-xl border border-gray-200 group-hover:border-green-300 transition-colors duration-300">
+                  <img 
+                    src={item.main_image || "/placeholder.jpg"} 
+                    alt={translation?.title} 
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" 
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = "/placeholder.jpg";
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                
+                <div className="space-y-3">
+                  <p className="text-sm text-gray-600 line-clamp-3 leading-relaxed min-h-[4rem]">
+                    {translation?.content || "Nội dung không có"}
+                  </p>
+                  
+                  <div className="flex items-center gap-2 text-xs text-gray-500 bg-gray-50 px-3 py-2 rounded-lg">
+                    <Calendar className="h-3 w-3" />
+                    <span>{item.published_at ? format(new Date(item.published_at), "dd MMMM yyyy", { locale: vi }) : "Chưa có ngày"}</span>
+                  </div>
+                </div>
+                
+                <div className="flex gap-3 pt-2">
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    className="flex-1 border-green-200 text-green-700 hover:bg-green-50 hover:border-green-300 rounded-xl transition-all duration-200" 
+                    asChild
+                  >
               <Link href={`/admin/news/${item.id}/edit`}>
                 <Edit className="h-4 w-4 mr-1" /> 
-                Chỉnh sửa
-              </Link>
-            </Button>
-            <Button
-              size="sm"
-              variant="destructive" 
-              className="flex-1 bg-red-500 hover:bg-red-600 rounded-xl transition-all duration-200" 
-              onClick={() => handleDelete(item.id)}
-            >
-              <Trash2 className="h-4 w-4 mr-1" />
-              Xóa
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    );
+                      Chỉnh sửa
+                    </Link>
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="destructive" 
+                    className="flex-1 bg-red-500 hover:bg-red-600 rounded-xl transition-all duration-200" 
+                    onClick={() => handleDelete(item.id)}
+                  >
+                    <Trash2 className="h-4 w-4 mr-1" />
+                    Xóa
+                  </Button>
+              </div>
+            </CardContent>
+          </Card>
+          );
   };
 
   // List view render function
@@ -282,8 +282,8 @@ export default function NewsManagementPage() {
                 <Trash2 className="h-4 w-4 mr-1" />
                 Xóa
               </Button>
-            </div>
-          </div>
+      </div>
+    </div>
         </CardContent>
       </Card>
     );

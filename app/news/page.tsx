@@ -5,123 +5,36 @@ import { CalendarDays, ChevronRight } from "lucide-react"
 import { getTranslations } from "@/lib/i18n"
 import NewsCategoryTabs from "./news-category-tabs"
 import NewsCard from "./news-card"
+import newsService from "@/lib/services/news.service"
+import newsCategoryService from "@/lib/services/news-category.service"
+import { NewsArticleAny } from "@/lib/types/news"
 
-export default function NewsPage() {
-  const t = getTranslations()
+function getPrimaryTranslation(article: NewsArticleAny, lang: string = 'vi') {
+  return (article as any).translations?.find?.((t: any) => t.language === lang) ||
+         (article as any).NewsTranslation?.find?.((t: any) => t.language === lang) ||
+         (article as any).translations?.[0] || (article as any).NewsTranslation?.[0];
+}
 
-  // Mock news data - this would be fetched from an API in a real app
-  const featuredNews = {
-    id: "1",
-    title: "CHI MA HTT KHẲNG ĐỊNH SỰ MINH BẠCH VÀ VĂN HÓA ỨNG XỬ TRÊN CÁC PHƯƠNG TIỆN TRUYỀN THÔNG",
-    date: "04/06/2025",
-    category: t.eventsNews,
-    image: "/img/new1.png",
-    excerpt: "Sau bức thư thứ nhất gửi ngày 30.5.2025 đã được Quý cổ đông, đối tác và cán bộ nhân viên cũng như Quý Công chúng hiểu về tinh thần trách nhiệm và quyết tâm của Chi Ma HTT trong việc tham gia đầu tư Dự án...",
-  }
+function getCategoryName(article: NewsArticleAny, lang: string = 'vi') {
+  const cat = (article as any).category || (article as any).NewsCategory;
+  if (!cat) return '';
+  return cat.translations?.find?.((t: any) => t.language === lang)?.name || cat.translations?.[0]?.name || '';
+}
 
-  const newsItems = [
-    {
-      id: "2",
-      title: "CÁCH XÁC ĐỊNH VỊ TRÍ CONTAINER TRÊN TÀU",
-      date: "18/06/2025",
-      category: t.industryNews,
-      image: "/img/new2.png",
-    },
-    {
-      id: "3",
-      title: "CẢNG QUỐC TẾ CHU LAI ĐƯA VÀO VẬN HÀNH TÀU LAI DẮT CHU LAI PORT 02",
-      date: "04/06/2025",
-      category: t.eventsNews,
-      image: "/img/new3.png",
-    },
-    {
-      id: "4",
-      title: "INCOTERMS LÀ GÌ VÀ CÓ Ý NGHĨA NHƯ THẾ NÀO?",
-      date: "03/06/2025",
-      category: t.industryNews,
-      image: "/img/service1.png",
-    },
-    {
-      id: "5",
-      title: "CBNV CHI MA HTT TÍCH CỰC LAO ĐỘNG SÁNG TẠO",
-      date: "03/06/2025",
-      category: t.internalNews,
-      image: "/img/service2.png",
-    },
-    {
-      id: "6",
-      title: "THƯ CỦA CHỦ TỊCH HĐQT VỀ VIỆC ĐỀ XUẤT ĐẦU TƯ DỰ ÁN ĐƯỜNG SẮT TỐC ĐỘ CAO BẮC – NAM",
-      date: "30/05/2025",
-      category: t.eventsNews,
-      image: "/img/service3.png",
-    },
-    {
-      id: "7",
-      title: "TÌM HIỂU Ý NGHĨA CỦA MÀU SẮC CONTAINER TRONG VẬN TẢI BIỂN",
-      date: "28/05/2025",
-      category: t.knowledgeNews,
-      image: "/img/service4.png",
-    },
-    {
-      id: "8",
-      title: "CHI MA HTT CÔNG BỐ MỞ TUYẾN HÀNG HẢI TRỰC TIẾP CHI MA – ẤN ĐỘ",
-      date: "21/05/2025",
-      category: t.eventsNews,
-      image: "/img/service5.png",
-    },
-    {
-      id: "9",
-      title: "CHI MA HTT VẬN CHUYỂN HÀNG VIỆN TRỢ QUỐC TẾ",
-      date: "09/05/2025",
-      category: t.internalNews,
-      image: "/img/service6.png",
-    },
-  ]
+export default async function NewsPage({ searchParams }: {searchParams?: Record<string, string | string[]>}) {
+  const langParam = (searchParams?.lang as string) || 'vi'
+  const t = getTranslations(langParam as any)
 
-  const hotNews = [
-    {
-      id: "10",
-      title: "2025 – KỶ NGUYÊN MỚI CỦA CÁC LIÊN MINH HÀNG HẢI",
-      date: "11/03/2025",
-      category: t.knowledgeNews,
-      image: "/img/why1.png",
-    },
-    {
-      id: "11",
-      title: "TÌM HIỂU KHO HÀNG QUY MÔ LỚN TẠI MIỀN TRUNG",
-      date: "03/03/2025",
-      category: t.knowledgeNews,
-      image: "/img/why2.png",
-    },
-    {
-      id: "12",
-      title: "HỆ THỐNG KHO CHUẨN QUỐC TẾ",
-      date: "25/02/2025",
-      category: t.knowledgeNews,
-      image: "/img/why3.png",
-    },
-    {
-      id: "13",
-      title: "CHỈ SỐ LPI – LOGISTICS PERFORMANCE INDEX",
-      date: "15/02/2025",
-      category: t.knowledgeNews,
-      image: "/img/why4.png",
-    },
-    {
-      id: "14",
-      title: "LỄ KHÁNH THÀNH BẾN 5 VẠN TẤN, CẢNG QUỐC TẾ CHI MA",
-      date: "05/02/2025",
-      category: t.eventsNews,
-      image: "/img/service6.png",
-    },
-    {
-      id: "15",
-      title: "TIM HIỂU VỀ GRI – PHỤ PHÍ CƯỚC VẬN CHUYỂN TĂNG",
-      date: "08/05/2025",
-      category: t.industryNews,
-      image: "/img/new2.png",
-    },
-  ]
+  const lang: string = langParam
+  const categoryId = searchParams?.categoryId ? Number(searchParams.categoryId) : undefined
+
+  const [ { data: newsData }, categories ] = await Promise.all([
+    newsService.list({ language: lang, page: 1, pageSize: 10, categoryId }),
+    newsCategoryService.list(lang)
+  ]);
+
+  const featuredNews = newsData[0]
+  const hotNews = newsData.slice(1, 6)
 
   return (
     <div className="container mx-auto py-12">
@@ -146,36 +59,39 @@ export default function NewsPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Main featured news - larger size */}
-          <div className="col-span-1 lg:col-span-2 bg-white rounded-lg overflow-hidden shadow-md">
-            <div className="relative h-80 w-full">
-              <Image 
-                src={featuredNews.image} 
-                alt={featuredNews.title} 
-                fill 
-                className="object-cover"
-              />
-            </div>
-            <div className="p-8">
-              <div className="flex items-center gap-4 mb-4 text-sm text-gray-500">
-                <span className="bg-[#e8f5ee] text-[#00b764] px-3 py-1 rounded-full text-xs">
-                  {featuredNews.category}
-                </span>
-                <div className="flex items-center">
-                  <CalendarDays className="w-4 h-4 mr-1" />
-                  <span>{featuredNews.date}</span>
-                </div>
+          {featuredNews && (
+            <div className="col-span-1 lg:col-span-2 bg-white rounded-lg overflow-hidden shadow-md">
+              <div className="relative h-80 w-full">
+                <Image 
+                  src={featuredNews.main_image} 
+                  alt={getPrimaryTranslation(featuredNews, lang)?.title || ''} 
+                  fill 
+                  className="object-cover"
+                />
               </div>
-              <h3 className="text-xl font-bold mb-4">{featuredNews.title}</h3>
-              <p className="text-gray-600 mb-6">{featuredNews.excerpt}</p>
-              <Link href={`/news/${featuredNews.id}`}>
-                <Button className="bg-[#00b764] hover:bg-[#009f56] text-white">
-                  {t.readMore} <ChevronRight className="h-4 w-4 ml-1" />
-                </Button>
-              </Link>
+              <div className="p-8">
+                <div className="flex items-center gap-4 mb-4 text-sm text-gray-500">
+                  {getCategoryName(featuredNews, lang) && (
+                    <span className="bg-[#e8f5ee] text-[#00b764] px-3 py-1 rounded-full text-xs">
+                      {getCategoryName(featuredNews, lang)}
+                    </span>
+                  )}
+                  <div className="flex items-center">
+                    <CalendarDays className="w-4 h-4 mr-1" />
+                    <span>{new Date(featuredNews.published_at).toLocaleDateString()}</span>
+                  </div>
+                </div>
+                <h3 className="text-xl font-bold mb-4">{getPrimaryTranslation(featuredNews, lang)?.title}</h3>
+                <Link href={`/news/${featuredNews.id}`}>
+                  <Button className="bg-[#00b764] hover:bg-[#009f56] text-white">
+                    {t.readMore} <ChevronRight className="h-4 w-4 ml-1" />
+                  </Button>
+                </Link>
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* Hot news sidebar (moved from below) */}
+          {/* Hot news sidebar */}
           <div className="col-span-1">
             <div className="bg-white rounded-lg shadow-md p-8">
               <h3 className="text-xl font-bold mb-8 text-[#C14639]">{t.hotNews}</h3>
@@ -185,19 +101,19 @@ export default function NewsPage() {
                     <div className={`flex gap-5 group ${index !== hotNews.length - 1 ? 'mb-4' : ''}`}>
                       <div className="relative h-20 w-28 flex-shrink-0">
                         <Image 
-                          src={item.image} 
-                          alt={item.title} 
+                          src={item.main_image} 
+                          alt={getPrimaryTranslation(item, lang)?.title || ''} 
                           fill 
                           className="object-cover rounded"
                         />
                       </div>
                       <div>
                         <h4 className="font-medium text-base group-hover:text-[#00b764] line-clamp-2">
-                          {item.title}
+                          {getPrimaryTranslation(item, lang)?.title}
                         </h4>
                         <div className="flex items-center mt-2 text-xs text-gray-500">
                           <CalendarDays className="w-3 h-3 mr-1" />
-                          <span>{item.date}</span>
+                          <span>{new Date(item.published_at).toLocaleDateString()}</span>
                         </div>
                       </div>
                     </div>
@@ -211,28 +127,14 @@ export default function NewsPage() {
 
       {/* News category tabs (moved from above) */}
       <div className="mb-10">
-        <NewsCategoryTabs 
-          categories={{
-            all: t.allNews,
-            events: t.eventsNews,
-            internal: t.internalNews,
-            industry: t.industryNews
-          }}
-        />
+        <NewsCategoryTabs categories={categories.map(c=>({id:c.id,name:c.translations[0]?.name||''}))} lang={lang} />
       </div>
 
       {/* News grid */}
       <div className="mb-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {newsItems.map((item) => (
-            <NewsCard 
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              date={item.date}
-              category={item.category}
-              image={item.image}
-            />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12">
+          {newsData.map((article) => (
+            <NewsCard key={article.id} article={article} language={lang} />
           ))}
         </div>
 

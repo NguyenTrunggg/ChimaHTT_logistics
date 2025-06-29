@@ -24,10 +24,10 @@ export interface JobArticle {
   id: number;
   primary_image: string;
   status: ArticleStatus;
-  published_at?: string; // ISO date string
-  created_at: string;
-  updated_at: string;
-  job_deadline: string;
+  published_at?: string | Date;
+  created_at: string | Date;
+  updated_at: string | Date;
+  job_deadline: string | Date;
   author: JobArticleAuthor;
   translations: JobArticleTranslation[];
 } 

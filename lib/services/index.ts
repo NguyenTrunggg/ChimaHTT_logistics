@@ -12,6 +12,7 @@ export * from "./job.service";
 export * from "./service.service";
 export * from "./upload.service";
 export * from "./container.service";
+export * from "./news-category.service";
 
 // Export types
 export type {

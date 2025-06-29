@@ -69,7 +69,7 @@ export default function ServiceForm({ initialData }: ServiceFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("edit");
-  const [features, setFeatures] = useState(parseFeaturesOrDefault(initialData?.translations[0]?.features));
+  const [features, setFeatures] = useState(parseFeaturesOrDefault(initialData?.ServiceTranslation[0]?.features));
 
   const {
     register,
@@ -82,10 +82,10 @@ export default function ServiceForm({ initialData }: ServiceFormProps) {
     resolver: zodResolver(serviceSchema),
     defaultValues: initialData
       ? {
-          title: initialData.translations[0]?.title || "",
+          title: initialData.ServiceTranslation[0]?.title || "",
           main_image: initialData.main_image,
-          content: initialData.translations[0]?.content || "",
-          features: parseFeaturesOrDefault(initialData.translations[0]?.features),
+          content: initialData.ServiceTranslation[0]?.content || "",
+          features: parseFeaturesOrDefault(initialData.ServiceTranslation[0]?.features),
         }
       : {
           title: "",

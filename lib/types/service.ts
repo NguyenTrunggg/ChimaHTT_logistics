@@ -9,5 +9,5 @@ export interface ServiceTranslation {
 export interface LogisticService {
   id: number;
   main_image: string;
-  translations: ServiceTranslation[];
+  ServiceTranslation: ServiceTranslation[];
 } 

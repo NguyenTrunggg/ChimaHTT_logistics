@@ -44,8 +44,8 @@ export default function CareersManagementPage() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const data = await jobService.list("?lang=vi");
-        setJobs(data);
+        const { data } = await jobService.list({ language: 'vi', pageSize:100 });
+        setJobs(Array.isArray(data)?data:[]);
       } catch (err) {
         console.error(err);
         setError("Không thể tải danh sách tuyển dụng");

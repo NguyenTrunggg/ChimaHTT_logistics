@@ -112,7 +112,7 @@ export default function EditServicePage() {
 
   if (!service) return null;
 
-  const translation = service.translations.find(t => t.language === "vi") || service.translations[0];
+  const translation = service.ServiceTranslation.find(t => t.language === "vi") || service.ServiceTranslation[0];
 
   return (
     <div className="space-y-8">

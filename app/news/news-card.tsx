@@ -1,17 +1,21 @@
 import Image from "next/image"
 import Link from "next/link"
 import { CalendarDays } from "lucide-react"
+import { NewsArticleAny, NewsTranslation } from "@/lib/types/news"
 
 interface NewsCardProps {
-  id: string
-  title: string
-  date: string
-  category: string
-  image: string
+  article: NewsArticleAny
+  language?: string
   className?: string
 }
 
-export default function NewsCard({ id, title, date, category, image, className = "" }: NewsCardProps) {
+export default function NewsCard({ article, language = "vi", className = "" }: NewsCardProps) {
+  const translation: NewsTranslation | undefined = (article as any).translations?.find?.((t: any) => t.language === language) || (article as any).NewsTranslation?.find?.((t: any) => t.language === language)
+  const title = translation?.title ?? ""
+  const date = new Date(article.published_at ?? article.published_at).toLocaleDateString()
+  const categoryName = (article as any).category?.translations?.find?.((t: any) => t.language === language)?.name || (article as any).NewsCategory?.translations?.find?.((t: any)=>t.language === language)?.name || ""
+  const image = article.main_image
+  const id = article.id
   return (
     <Link href={`/news/${id}`}>
       <div className={`bg-white rounded-lg overflow-hidden shadow-md h-full transition-all hover:shadow-lg hover:-translate-y-1 ${className}`}>
@@ -29,7 +33,7 @@ export default function NewsCard({ id, title, date, category, image, className =
               <CalendarDays className="w-3 h-3 mr-1" />
               <span className="text-xs">{date}</span>
             </div>
-            <span className="text-xs text-[#00b764]">{category}</span>
+            {categoryName && <span className="text-xs text-[#00b764]">{categoryName}</span>}
           </div>
           <h3 className="font-bold line-clamp-2 hover:text-[#00b764] transition-colors">{title}</h3>
         </div>

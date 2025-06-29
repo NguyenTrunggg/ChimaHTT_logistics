@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useForm, useWatch, useFieldArray } from "react-hook-form";
+import { useState, useMemo, memo } from "react";
+import { useForm, useWatch, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Input } from "@/components/ui/input";
@@ -35,6 +35,8 @@ import {
   GripVertical,
   List
 } from "lucide-react";
+import ImageUpload from "@/components/ui/image-upload";
+import ImageGallery from "@/components/ui/image-gallery";
 
 const jobSchema = z.object({
   job_title: z.string().min(3, "Tiêu đề tối thiểu 3 ký tự"),
@@ -86,6 +88,7 @@ export default function JobForm({ initialData }: JobFormProps) {
     formState: { errors },
     reset,
     control,
+    setValue,
   } = useForm<JobFormValues>({
     resolver: zodResolver(jobSchema),
     defaultValues: initialData
@@ -93,7 +96,9 @@ export default function JobForm({ initialData }: JobFormProps) {
           job_title: initialData.translations[0]?.job_title || "",
           job_position: initialData.translations[0]?.job_position || "",
           job_location: initialData.translations[0]?.job_location || "",
-          job_deadline: initialData.job_deadline.split("T")[0],
+          job_deadline: typeof initialData.job_deadline === "string"
+            ? initialData.job_deadline.split("T")[0]
+            : format(initialData.job_deadline, "yyyy-MM-dd"),
           status: initialData.status,
           primary_image: initialData.primary_image,
           job_description: parseJsonOrDefault(initialData.translations[0]?.job_description),
@@ -116,21 +121,55 @@ export default function JobForm({ initialData }: JobFormProps) {
   // Field arrays for dynamic lists
   const { fields: descFields, append: appendDesc, remove: removeDesc } = useFieldArray({
     control,
-    name: "job_description"
+    name: "job_description",
+    keyName: "key"
   });
 
   const { fields: reqFields, append: appendReq, remove: removeReq } = useFieldArray({
     control,
-    name: "job_requirements"
+    name: "job_requirements",
+    keyName: "key"
   });
 
   const { fields: benefitFields, append: appendBenefit, remove: removeBenefit } = useFieldArray({
     control,
-    name: "job_benefits"
+    name: "job_benefits",
+    keyName: "key"
   });
 
-  // Watch form values for live preview
-  const watchedValues = useWatch({ control });
+  // Watch specific fields to reduce unnecessary re-renders (prevents losing focus)
+  const watchedJobTitle = useWatch({ control, name: "job_title" });
+  const watchedJobPosition = useWatch({ control, name: "job_position" });
+  const watchedJobLocation = useWatch({ control, name: "job_location" });
+  const watchedJobDeadline = useWatch({ control, name: "job_deadline" });
+  const watchedStatus = useWatch({ control, name: "status" });
+  const watchedPrimaryImage = useWatch({ control, name: "primary_image" });
+  const watchedJobDescription = useWatch({ control, name: "job_description" });
+  const watchedJobRequirements = useWatch({ control, name: "job_requirements" });
+  const watchedJobBenefits = useWatch({ control, name: "job_benefits" });
+
+  // Memoize preview values to keep reference stable between renders
+  const watchedValues = useMemo(() => ({
+    job_title: watchedJobTitle,
+    job_position: watchedJobPosition,
+    job_location: watchedJobLocation,
+    job_deadline: watchedJobDeadline,
+    status: watchedStatus,
+    primary_image: watchedPrimaryImage,
+    job_description: watchedJobDescription,
+    job_requirements: watchedJobRequirements,
+    job_benefits: watchedJobBenefits,
+  }), [
+    watchedJobTitle,
+    watchedJobPosition,
+    watchedJobLocation,
+    watchedJobDeadline,
+    watchedStatus,
+    watchedPrimaryImage,
+    watchedJobDescription,
+    watchedJobRequirements,
+    watchedJobBenefits,
+  ]);
 
   const onSubmit = async (values: JobFormValues) => {
     setLoading(true);
@@ -161,27 +200,49 @@ export default function JobForm({ initialData }: JobFormProps) {
     }
   };
 
-  // Dynamic list component
-  const DynamicList = ({ 
-    title, 
-    fields, 
-    register, 
-    append, 
-    remove, 
-    name, 
-    icon: Icon, 
+  // Memoized textarea row to prevent losing focus
+  const TextareaRow = memo(function TextareaRow({
+    register,
+    name,
+    placeholder,
     color,
-    placeholder 
+  }: {
+    register: any;
+    name: string;
+    placeholder: string;
+    color: string;
+  }) {
+    return (
+      <Textarea
+        {...register(name)}
+        className={`border-${color}-200 focus:border-${color}-400 focus:ring-${color}-200 resize-none min-h-[60px] rounded-xl transition-all duration-200 hover:shadow-md placeholder:text-gray-400 placeholder:italic placeholder:font-light`}
+        placeholder={placeholder}
+        rows={2}
+      />
+    );
+  });
+
+  // Dynamic list component
+  const DynamicList = ({
+    title,
+    fields,
+    append,
+    remove,
+    name,
+    icon: Icon,
+    color,
+    placeholder,
+    control
   }: {
     title: string;
     fields: any[];
-    register: any;
     append: (item: { item: string }) => void;
     remove: (index: number) => void;
     name: string;
     icon: any;
     color: string;
     placeholder: string;
+    control: any;
   }) => (
     <div>
       <label className="block font-semibold mb-3 text-gray-700 flex items-center gap-2">
@@ -189,31 +250,41 @@ export default function JobForm({ initialData }: JobFormProps) {
         {title}
       </label>
       <div className="space-y-3">
-        {fields.map((field, index) => (
-          <div key={field.id} className="flex gap-3 group">
-            <div className="flex items-center text-gray-400">
-              <GripVertical className="h-4 w-4" />
+        {fields.map((field, index) => {
+          return (
+            <div key={field.key} className="flex gap-3 group">
+              <div className="flex items-center text-gray-400">
+                <GripVertical className="h-4 w-4" />
+              </div>
+              <div className="flex-1">
+                <Controller
+                  control={control}
+                  name={`${name}.${index}.item`}
+                  render={({ field }) => (
+                    <Textarea
+                      {...field}
+                      rows={2}
+                      onFocus={() => console.log('FOCUS', name, index)}
+                      onBlur={() => console.log('BLUR', name, index)}
+                      placeholder={`${placeholder} ${index + 1}`}
+                      className={`border-${color}-200 focus:border-${color}-400 focus:ring-${color}-200 resize-none min-h-[60px] rounded-xl transition-all duration-200 hover:shadow-md placeholder:text-gray-400 placeholder:italic placeholder:font-light`}
+                    />
+                  )}
+                />
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => remove(index)}
+                disabled={fields.length === 1}
+                className="text-red-600 hover:text-red-700 hover:bg-red-50 hover:border-red-300 self-start mt-1 rounded-xl transition-all duration-200 hover:shadow-md"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
             </div>
-            <div className="flex-1">
-              <Textarea
-                {...register(`${name}.${index}.item` as const)}
-                className={`border-${color}-200 focus:border-${color}-400 focus:ring-${color}-200 resize-none min-h-[60px] rounded-xl transition-all duration-200 hover:shadow-md placeholder:text-gray-400 placeholder:italic placeholder:font-light`}
-                placeholder={`${placeholder} ${index + 1}`}
-                rows={2}
-              />
-            </div>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => remove(index)}
-              disabled={fields.length === 1}
-              className="text-red-600 hover:text-red-700 hover:bg-red-50 hover:border-red-300 self-start mt-1 rounded-xl transition-all duration-200 hover:shadow-md"
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </div>
-        ))}
+          );
+        })}
         
         <Button
           type="button"
@@ -295,7 +366,7 @@ export default function JobForm({ initialData }: JobFormProps) {
           {/* Content Preview */}
           <div className="space-y-5">
             {/* Job Description Preview */}
-            {watchedValues.job_description && watchedValues.job_description.some(item => item.item.trim()) && (
+            {watchedValues.job_description && watchedValues.job_description.some(item => item.item!.trim()) && (
               <div>
                 <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
                   <div className="p-1.5 bg-blue-100 rounded-lg">
@@ -306,7 +377,7 @@ export default function JobForm({ initialData }: JobFormProps) {
                 <div className="bg-blue-50 p-4 rounded-2xl border border-blue-200 shadow-sm">
                   <ul className="space-y-2 text-sm text-gray-600">
                     {watchedValues.job_description
-                      .filter(item => item.item.trim())
+                      .filter(item => item.item!.trim())
                       .map((item, index) => (
                         <li key={index} className="flex items-start gap-3">
                           <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
@@ -319,7 +390,7 @@ export default function JobForm({ initialData }: JobFormProps) {
             )}
 
             {/* Requirements Preview */}
-            {watchedValues.job_requirements && watchedValues.job_requirements.some(item => item.item.trim()) && (
+            {watchedValues.job_requirements && watchedValues.job_requirements.some(item => item.item!.trim()) && (
               <div>
                 <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
                   <div className="p-1.5 bg-purple-100 rounded-lg">
@@ -330,7 +401,7 @@ export default function JobForm({ initialData }: JobFormProps) {
                 <div className="bg-purple-50 p-4 rounded-2xl border border-purple-200 shadow-sm">
                   <ul className="space-y-2 text-sm text-gray-600">
                     {watchedValues.job_requirements
-                      .filter(item => item.item.trim())
+                      .filter(item => item.item!.trim())
                       .map((item, index) => (
                         <li key={index} className="flex items-start gap-3">
                           <div className="w-2 h-2 bg-purple-600 rounded-full mt-2 flex-shrink-0"></div>
@@ -343,7 +414,7 @@ export default function JobForm({ initialData }: JobFormProps) {
             )}
 
             {/* Benefits Preview */}
-            {watchedValues.job_benefits && watchedValues.job_benefits.some(item => item.item.trim()) && (
+            {watchedValues.job_benefits && watchedValues.job_benefits.some(item => item.item!.trim()) && (
               <div>
                 <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
                   <div className="p-1.5 bg-green-100 rounded-lg">
@@ -354,7 +425,7 @@ export default function JobForm({ initialData }: JobFormProps) {
                 <div className="bg-green-50 p-4 rounded-2xl border border-green-200 shadow-sm">
                   <ul className="space-y-2 text-sm text-gray-600">
                     {watchedValues.job_benefits
-                      .filter(item => item.item.trim())
+                      .filter(item => item.item!.trim())
                       .map((item, index) => (
                         <li key={index} className="flex items-start gap-3">
                           <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
@@ -474,37 +545,60 @@ export default function JobForm({ initialData }: JobFormProps) {
                         <div className="w-3 h-3 bg-yellow-600 rounded-full"></div>
                         Trạng thái
                       </label>
-                      <Select defaultValue={initialData ? initialData.status : "draft"} {...register("status") as any}>
-                        <SelectTrigger className="border-green-200 focus:border-green-400 focus:ring-green-200 h-12 rounded-xl transition-all duration-200 hover:shadow-md">
-                          <SelectValue placeholder="Chọn trạng thái" />
-                        </SelectTrigger>
-                        <SelectContent className="rounded-xl">
-                          <SelectItem value="draft" className="rounded-lg">
-                            <div className="flex items-center gap-2">
-                              <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                              Bản nháp
-                            </div>
-                          </SelectItem>
-                          <SelectItem value="published" className="rounded-lg">
-                            <div className="flex items-center gap-2">
-                              <div className="w-2 h-2 bg-green-600 rounded-full"></div>
-                              Đã công bố
-                            </div>
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Controller
+                        name="status"
+                        control={control}
+                        render={({ field }) => (
+                          <Select value={field.value} onValueChange={field.onChange}>
+                            <SelectTrigger className="border-green-200 focus:border-green-400 focus:ring-green-200 h-12 rounded-xl transition-all duration-200 hover:shadow-md">
+                              <SelectValue placeholder="Chọn trạng thái" />
+                            </SelectTrigger>
+                            <SelectContent className="rounded-xl">
+                              <SelectItem value="draft" className="rounded-lg">
+                                <div className="flex items-center gap-2">
+                                  <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                                  Bản nháp
+                                </div>
+                              </SelectItem>
+                              <SelectItem value="published" className="rounded-lg">
+                                <div className="flex items-center gap-2">
+                                  <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                                  Đã công bố
+                                </div>
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        )}
+                      />
                     </div>
 
                     <div>
                       <label className="block font-semibold mb-3 text-gray-700 flex items-center gap-2">
                         <ImageIcon className="h-4 w-4 text-pink-600" />
-                        Ảnh đại diện (URL)
+                        Ảnh đại diện *
                       </label>
-                      <Input 
-                        {...register("primary_image")} 
-                        className="border-green-200 focus:border-green-400 focus:ring-green-200 h-12 rounded-xl transition-all duration-200 hover:shadow-md placeholder:text-gray-400 placeholder:italic placeholder:font-light"
-                        placeholder="Nhập đường dẫn ảnh..."
+
+                      {/* Image Upload Component */}
+                      <ImageUpload
+                        value={watchedValues.primary_image}
+                        onChange={(url) => setValue("primary_image", url)}
+                        placeholder="Nhập URL ảnh hoặc upload file..."
+                        showPreview
+                        showUrlInput
+                        autoUpload
+                        dragAndDrop
                       />
+
+                      {/* Previously Uploaded Images */}
+                      <div className="mt-3">
+                        <ImageGallery
+                          onImageSelect={(imageUrl) => setValue("primary_image", imageUrl)}
+                          selectedImage={watchedValues.primary_image}
+                          triggerText="Chọn từ ảnh đã tải lên"
+                          className="w-full"
+                        />
+                      </div>
+
                       {errors.primary_image && (
                         <div className="flex items-center gap-2 mt-3 text-red-600 bg-red-50 px-4 py-3 rounded-xl border border-red-200">
                           <AlertCircle className="h-4 w-4" />
@@ -532,13 +626,13 @@ export default function JobForm({ initialData }: JobFormProps) {
                   <DynamicList
                     title="Mô tả công việc"
                     fields={descFields}
-                    register={register}
                     append={appendDesc}
                     remove={removeDesc}
                     name="job_description"
                     icon={FileText}
                     color="blue"
                     placeholder="Nhập mô tả công việc..."
+                    control={control}
                   />
                   {errors.job_description && (
                     <div className="flex items-center gap-2 text-red-600 bg-red-50 px-4 py-3 rounded-xl border border-red-200">
@@ -551,13 +645,13 @@ export default function JobForm({ initialData }: JobFormProps) {
                   <DynamicList
                     title="Yêu cầu ứng viên"
                     fields={reqFields}
-                    register={register}
                     append={appendReq}
                     remove={removeReq}
                     name="job_requirements"
                     icon={Star}
                     color="purple"
                     placeholder="Nhập yêu cầu ứng viên..."
+                    control={control}
                   />
                   {errors.job_requirements && (
                     <div className="flex items-center gap-2 text-red-600 bg-red-50 px-4 py-3 rounded-xl border border-red-200">
@@ -570,13 +664,13 @@ export default function JobForm({ initialData }: JobFormProps) {
                   <DynamicList
                     title="Quyền lợi & Phúc lợi"
                     fields={benefitFields}
-                    register={register}
                     append={appendBenefit}
                     remove={removeBenefit}
                     name="job_benefits"
                     icon={Gift}
                     color="green"
                     placeholder="Nhập quyền lợi & phúc lợi..."
+                    control={control}
                   />
                   {errors.job_benefits && (
                     <div className="flex items-center gap-2 text-red-600 bg-red-50 px-4 py-3 rounded-xl border border-red-200">

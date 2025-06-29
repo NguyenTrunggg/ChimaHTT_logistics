@@ -29,7 +29,7 @@ export default function EditNewsPage() {
         const newsId = parseInt(id);
         if (isNaN(newsId)) throw new Error("ID không hợp lệ");
         const data = await newsService.detail(newsId);
-        setArticle(data);
+        setArticle(data as any);
       } catch (err) {
         console.error(err);
         setError("Không thể tải bài viết tin tức");
@@ -162,7 +162,7 @@ export default function EditNewsPage() {
                   Chỉnh sửa bài viết
                 </h1>
                 <p className="text-gray-600 mt-1">
-                  {article.NewsTranslation?.[0]?.title || "Tiêu đề bài viết"}
+                  {article.translations?.[0]?.title || "Tiêu đề bài viết"}
                 </p>
               </div>
             </div>
